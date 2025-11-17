@@ -1,0 +1,28 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "足迹"
+      }
+    },
+    {
+      "path": "pages/checklist/index",
+      "style": {
+        "navigationBarTitleText": "足迹"
+      }
+    },
+    {
+      "path": "pages/canvas-test/index",
+      "style": {
+        "navigationBarTitleText": "Canvas测试"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "足迹",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "checklist-app",
+  "appid": "",
+  "description": "足迹",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "wx39ada2473e4638c3",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "postcss": true,
+      "minified": true
+    },
+    "usingComponents": true
+  },
+  "uniStatistics": {
+    "enable": false
+  }
+}
