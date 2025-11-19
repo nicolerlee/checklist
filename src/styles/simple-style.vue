@@ -73,11 +73,12 @@ const drawCanvas = (ctx, canvas, config) => {
   // 清单项 - 显示所有项目
   ctx.textAlign = 'left'
   ctx.font = '300 32px -apple-system, BlinkMacSystemFont, sans-serif'
+  ctx.textBaseline = 'middle'
   
   props.items.forEach((item, index) => {
     const checkboxSize = 44
     const checkboxX = padding
-    const checkboxY = y - checkboxSize + 8
+    const checkboxY = y - checkboxSize / 2
     
     if (item.checked) {
       // 已勾选：蓝色填充
@@ -107,7 +108,7 @@ const drawCanvas = (ctx, canvas, config) => {
     ctx.fillText(item.text, checkboxX + checkboxSize + 24, y)
     ctx.globalAlpha = 1
     
-    y += 60
+    y += 75
   })
 }
 

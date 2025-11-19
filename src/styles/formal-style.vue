@@ -76,6 +76,7 @@ const drawCanvas = (ctx, canvas, config) => {
   // 清单项 - 显示所有项目
   ctx.textAlign = 'left'
   ctx.font = '600 32px Georgia, "Times New Roman", serif'
+  ctx.textBaseline = 'middle'
   
   props.items.forEach((item, index) => {
     // 分隔线（除了第一项）
@@ -91,7 +92,7 @@ const drawCanvas = (ctx, canvas, config) => {
     
     const checkboxSize = 42
     const checkboxX = padding
-    const checkboxY = y - checkboxSize + 8
+    const checkboxY = y - checkboxSize / 2
     
     if (item.checked) {
       // 已勾选：绿色填充

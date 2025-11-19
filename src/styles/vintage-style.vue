@@ -105,11 +105,12 @@ const drawCanvas = (ctx, canvas, config) => {
   // 清单项 - 显示所有项目
   ctx.textAlign = 'left'
   ctx.font = 'normal 30px "KaiTi", "楷体", cursive, serif'
+  ctx.textBaseline = 'middle'
   
   props.items.forEach((item, index) => {
     const checkboxSize = 40
     const checkboxX = padding
-    const checkboxY = y - checkboxSize + 8
+    const checkboxY = y - checkboxSize / 2
     
     if (item.checked) {
       // 已勾选：棕色填充

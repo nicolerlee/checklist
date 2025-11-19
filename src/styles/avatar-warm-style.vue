@@ -96,12 +96,13 @@ const drawCanvas = (ctx, canvas, config) => {
   // 清单项 - 显示所有项目
   ctx.textAlign = 'left'
   ctx.font = '34px sans-serif'
+  ctx.textBaseline = 'middle'
   
   props.items.forEach((item, index) => {
     // 复选框
     const checkboxSize = 48
     const checkboxX = padding
-    const checkboxY = y - checkboxSize + 8
+    const checkboxY = y - checkboxSize / 2
     
     if (item.checked) {
       // 已勾选：蓝色填充 + 白色对勾
@@ -131,7 +132,7 @@ const drawCanvas = (ctx, canvas, config) => {
     
     ctx.fillText(item.text, checkboxX + checkboxSize + 24, y)
     
-    y += 60
+    y += 75
   })
   
   // 感言
