@@ -1,8 +1,5 @@
 <template>
   <view class="container">
-    <!-- 胶带装饰 -->
-    <view class="tape-decoration"></view>
-    
     <!-- 标题 -->
     <view class="title-section">
       <text class="title">{{ theme.emoji }} {{ theme.name }}</text>
@@ -26,16 +23,6 @@
           </text>
         </view>
       </view>
-    </view>
-
-    <!-- 感言区域 -->
-    <view v-if="theme.quote" class="quote-section">
-      <text class="quote-text">{{ theme.quote }}</text>
-    </view>
-
-    <!-- 装饰花 -->
-    <view class="decoration-flower">
-      <text>🌸</text>
     </view>
 
   </view>
@@ -73,7 +60,6 @@ const drawMultilineText = (ctx, text, x, y, maxWidth, lineHeight) => {
   const originalTextBaseline = ctx.textBaseline
   const originalTextAlign = ctx.textAlign
   
-  // 临时设置为 top，方便计算
   ctx.textBaseline = 'top'
   
   // 收集所有行
@@ -91,7 +77,6 @@ const drawMultilineText = (ctx, text, x, y, maxWidth, lineHeight) => {
     }
   }
   
-  // 添加最后一行
   if (line.length > 0) {
     lines.push(line)
   }
@@ -99,7 +84,6 @@ const drawMultilineText = (ctx, text, x, y, maxWidth, lineHeight) => {
   // 绘制所有行
   lines.forEach((lineText) => {
     let drawX = x
-    // 如果是居中对齐，需要计算每行的实际位置
     if (originalTextAlign === 'center') {
       const lineWidth = ctx.measureText(lineText).width
       drawX = x + (maxWidth - lineWidth) / 2
@@ -119,106 +103,59 @@ const drawCanvas = (ctx, canvas, config) => {
   const { width, height, padding = 60 } = config
   
   // 背景
-  ctx.fillStyle = '#f9f3e8'
+  ctx.fillStyle = '#f8f9fa'
   ctx.fillRect(0, 0, width, height)
-  
-  // 背景纹理（简化版）
-  ctx.strokeStyle = 'rgba(139, 105, 20, 0.02)'
-  ctx.lineWidth = 1
-  for (let i = 0; i < width; i += 20) {
-    ctx.beginPath()
-    ctx.moveTo(i, 0)
-    ctx.lineTo(i + 20, height)
-    ctx.stroke()
-  }
-  
-  // 胶带装饰（简化）
-  ctx.fillStyle = 'rgba(210, 180, 140, 0.5)'
-  ctx.fillRect(width - 200, -20, 120, 40)
   
   let y = padding + 40
   
   // 标题
-  ctx.fillStyle = '#8b6914'
-  ctx.font = 'normal 42px "KaiTi", "楷体", cursive, serif'
+  ctx.fillStyle = '#2c3e50'
+  ctx.font = '300 46px -apple-system, BlinkMacSystemFont, sans-serif'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.1)'
-  ctx.shadowBlur = 2
-  ctx.shadowOffsetX = 1
-  ctx.shadowOffsetY = 1
   ctx.fillText(props.theme.name, width / 2, y)
-  ctx.shadowBlur = 0
   y += 100
   
   // 清单项 - 显示所有项目
   ctx.textAlign = 'left'
-  ctx.font = 'normal 30px "KaiTi", "楷体", cursive, serif'
+  ctx.font = '300 32px -apple-system, BlinkMacSystemFont, sans-serif'
   ctx.textBaseline = 'middle'
   
   props.items.forEach((item, index) => {
-    const checkboxSize = 40
+    const checkboxSize = 44
     const checkboxX = padding
     const checkboxY = y - checkboxSize / 2
     
     // 绘制边框（选中和未选中都画边框）
-    ctx.strokeStyle = '#8b6914'
-    ctx.lineWidth = 4
+    ctx.strokeStyle = '#3498db'
+    ctx.lineWidth = 3
     ctx.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
     
     if (item.checked) {
       // 已勾选：只显示勾，不填充
-      ctx.strokeStyle = '#8b6914'
-      ctx.lineWidth = 4
+      ctx.strokeStyle = '#3498db'
+      ctx.lineWidth = 3
       ctx.beginPath()
-      ctx.moveTo(checkboxX + 8, checkboxY + 20)
-      ctx.lineTo(checkboxX + 16, checkboxY + 28)
-      ctx.lineTo(checkboxX + 32, checkboxY + 12)
+      ctx.moveTo(checkboxX + 10, checkboxY + 22)
+      ctx.lineTo(checkboxX + 18, checkboxY + 30)
+      ctx.lineTo(checkboxX + 34, checkboxY + 14)
       ctx.stroke()
     }
     
     // 文字颜色保持一致
-    ctx.fillStyle = '#8b6914'
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.05)'
-    ctx.shadowBlur = 1
-    ctx.shadowOffsetX = 1
-    ctx.shadowOffsetY = 1
+    ctx.fillStyle = '#2c3e50'
     
     // 计算可用宽度
     const textX = checkboxX + checkboxSize + 24
     const maxTextWidth = width - textX - padding
-    const lineHeight = 36
+    const lineHeight = 40
     
     // 绘制多行文字
     const textHeight = drawMultilineText(ctx, item.text, textX, y - lineHeight / 2, maxTextWidth, lineHeight)
-    ctx.shadowBlur = 0
     
     // 根据实际文字高度调整 y 坐标
-    y += Math.max(60, textHeight)
+    y += Math.max(75, textHeight)
   })
-  
-  // 感言
-  y += 40
-  if (props.theme.quote) {
-    ctx.fillStyle = '#8b6914'
-    ctx.font = 'normal 26px "KaiTi", "楷体", cursive, serif'
-    ctx.textAlign = 'center'
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.05)'
-    ctx.shadowBlur = 1
-    ctx.shadowOffsetX = 1
-    ctx.shadowOffsetY = 1
-    
-    const quoteMaxWidth = width - padding * 2
-    const quoteLineHeight = 32
-    const quoteY = y
-    const quoteHeight = drawMultilineText(ctx, props.theme.quote, padding, quoteY, quoteMaxWidth, quoteLineHeight)
-    ctx.shadowBlur = 0
-    y += quoteHeight
-  }
-  
-  // 装饰花
-  ctx.font = '60px sans-serif'
-  ctx.fillText('🌸', width - 100, height - 200)
 }
 
 // 暴露方法供父组件调用
@@ -230,57 +167,30 @@ defineExpose({
 <style scoped>
 .container {
   min-height: 100vh;
-  background-color: #f9f3e8;
-  background-image: 
-    repeating-linear-gradient(45deg, transparent, transparent 10rpx, rgba(139, 105, 20, 0.02) 10rpx, rgba(139, 105, 20, 0.02) 20rpx);
+  background-color: #f8f9fa;
   padding: 30rpx;
-  position: relative;
 }
 
-/* 胶带装饰 */
-.tape-decoration {
-  position: absolute;
-  top: -10rpx;
-  right: 80rpx;
-  width: 120rpx;
-  height: 40rpx;
-  background-color: rgba(210, 180, 140, 0.5);
-  transform: rotate(5deg);
-  border-radius: 2rpx;
-  z-index: 10;
-}
-
-/* 装饰花 */
-.decoration-flower {
-  position: absolute;
-  bottom: 120rpx;
-  right: 40rpx;
-  font-size: 60rpx;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-/* 标题 - 复古手写风 */
+/* 标题 - 简约现代风 */
 .title-section {
   margin-bottom: 50rpx;
 }
 
 .title {
-  font-size: 42rpx;
-  font-weight: normal;
-  font-family: "KaiTi", "楷体", cursive, serif;
-  color: #8b6914;
+  font-size: 46rpx;
+  font-weight: 300;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #2c3e50;
   text-align: center;
   display: block;
   letter-spacing: 3rpx;
-  text-shadow: 1rpx 1rpx 2rpx rgba(0,0,0,0.1);
 }
 
 /* 清单项 */
 .items-section {
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  gap: 28rpx;
   margin-bottom: 40rpx;
 }
 
@@ -302,8 +212,8 @@ defineExpose({
 .item-content {
   display: flex;
   align-items: center;
-  gap: 20rpx;
-  padding: 16rpx 0;
+  gap: 24rpx;
+  padding: 20rpx 0;
   transition: all 0.3s ease;
 }
 
@@ -312,10 +222,10 @@ defineExpose({
 }
 
 .checkbox {
-  width: 40rpx;
-  height: 40rpx;
-  border: 4rpx solid #8b6914;
-  border-radius: 6rpx;
+  width: 44rpx;
+  height: 44rpx;
+  border: 3rpx solid #3498db;
+  border-radius: 12rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -330,43 +240,21 @@ defineExpose({
 }
 
 .check-icon {
-  color: #8b6914;
-  font-size: 22rpx;
+  color: #3498db;
+  font-size: 24rpx;
   font-weight: bold;
 }
 
 .item-text {
   flex: 1;
-  font-size: 30rpx;
-  font-weight: normal;
-  font-family: "KaiTi", "楷体", cursive, serif;
-  color: #8b6914;
+  font-size: 32rpx;
+  font-weight: 300;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #2c3e50;
   transition: all 0.3s ease;
-  line-height: 1.6;
+  line-height: 1.5;
   letter-spacing: 1rpx;
-  text-shadow: 1rpx 1rpx 2rpx rgba(0,0,0,0.05);
 }
 
-
-/* 感言区域 */
-.quote-section {
-  margin-top: 50rpx;
-  margin-bottom: 40rpx;
-  padding: 24rpx;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 12rpx;
-}
-
-.quote-text {
-  font-size: 26rpx;
-  font-weight: normal;
-  font-family: "KaiTi", "楷体", cursive, serif;
-  color: #8b6914;
-  text-align: center;
-  display: block;
-  line-height: 1.8;
-  letter-spacing: 2rpx;
-  text-shadow: 1rpx 1rpx 2rpx rgba(0,0,0,0.05);
-}
 
 </style>

@@ -55,6 +55,52 @@ const toggleItem = (index) => {
   emit('toggle', index)
 }
 
+// 绘制多行文字（自动换行）
+const drawMultilineText = (ctx, text, x, y, maxWidth, lineHeight) => {
+  const words = text.split('')
+  let line = ''
+  let currentY = y
+  const originalTextBaseline = ctx.textBaseline
+  const originalTextAlign = ctx.textAlign
+  
+  ctx.textBaseline = 'top'
+  
+  // 收集所有行
+  const lines = []
+  
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + words[i]
+    const metrics = ctx.measureText(testLine)
+    
+    if (metrics.width > maxWidth && line.length > 0) {
+      lines.push(line)
+      line = words[i]
+    } else {
+      line = testLine
+    }
+  }
+  
+  if (line.length > 0) {
+    lines.push(line)
+  }
+  
+  // 绘制所有行
+  lines.forEach((lineText) => {
+    let drawX = x
+    if (originalTextAlign === 'center') {
+      const lineWidth = ctx.measureText(lineText).width
+      drawX = x + (maxWidth - lineWidth) / 2
+      ctx.textAlign = 'left'
+    }
+    ctx.fillText(lineText, drawX, currentY)
+    currentY += lineHeight
+  })
+  
+  ctx.textBaseline = originalTextBaseline
+  ctx.textAlign = originalTextAlign
+  return currentY - y
+}
+
 // 绘制Canvas的方法，供父组件调用
 const drawCanvas = (ctx, canvas, config) => {
   const { width, height, padding = 60 } = config
@@ -112,9 +158,17 @@ const drawCanvas = (ctx, canvas, config) => {
     
     // 文字颜色保持一致
     ctx.fillStyle = '#2c3e50'
-    ctx.fillText(item.text, checkboxX + checkboxSize + 24, y)
     
-    y += 60
+    // 计算可用宽度
+    const textX = checkboxX + checkboxSize + 24
+    const maxTextWidth = width - textX - padding
+    const lineHeight = 38
+    
+    // 绘制多行文字
+    const textHeight = drawMultilineText(ctx, item.text, textX, y - lineHeight / 2, maxTextWidth, lineHeight)
+    
+    // 根据实际文字高度调整 y 坐标
+    y += Math.max(60, textHeight)
   })
 }
 
