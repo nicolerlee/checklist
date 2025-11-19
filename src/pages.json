@@ -3,13 +3,21 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "足迹"
+        "navigationBarTitleText": "足迹",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationStyle": "default",
+        "disableScroll": false,
+        "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/checklist/index",
       "style": {
-        "navigationBarTitleText": "足迹"
+        "navigationBarTitleText": "足迹",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationStyle": "default"
       }
     },
     {
@@ -22,7 +30,7 @@
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "足迹",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "#faf8f3",
+    "backgroundColor": "#faf8f3"
   }
 }

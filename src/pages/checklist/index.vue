@@ -1,29 +1,5 @@
 <template>
   <view v-if="currentTheme" class="page-container">
-    <!-- 风格切换器 -->
-    <view class="style-switcher">
-      <view class="switcher-header">
-        <text class="switcher-title">选择风格</text>
-      </view>
-      <view class="style-options">
-        <view
-          v-for="style in availableStyles"
-          :key="style.id"
-          class="style-option"
-          :class="{ active: currentStyleId === style.id }"
-          @click="switchStyle(style.id)"
-        >
-          <view 
-            class="style-preview"
-            :style="{ backgroundColor: style.bgColor }"
-          >
-            <text class="preview-text">Aa</text>
-          </view>
-          <text class="style-name">{{ style.name }}</text>
-        </view>
-      </view>
-    </view>
-
     <!-- 条件渲染样式组件 -->
     <avatar-warm-style 
       v-if="currentStyleId === 'avatar-warm'"
@@ -63,11 +39,30 @@
 
     <!-- 底部操作栏（公共） -->
     <view class="action-bar">
-      <view class="progress-info">
-        <text class="progress-text">已完成 {{ checkedCount }}/{{ items.length }} 项</text>
+      <!-- 风格切换工具栏 -->
+      <view class="style-toolbar">
+        <view class="toolbar-label">风格</view>
+        <view class="style-options">
+          <view
+            v-for="style in availableStyles"
+            :key="style.id"
+            class="style-option"
+            :class="{ active: currentStyleId === style.id }"
+            @click="switchStyle(style.id)"
+          >
+            <text class="style-name">{{ style.name }}</text>
+          </view>
+        </view>
       </view>
-      <view class="action-btn" @click="generateImage">
-        <text class="action-text">生成图片</text>
+      
+      <!-- 进度和生成按钮 -->
+      <view class="action-section">
+        <view class="progress-info">
+          <text class="progress-text">已完成 {{ checkedCount }}/{{ items.length }} 项</text>
+        </view>
+        <view class="action-btn" @click="generateImage">
+          <text class="action-text">生成图片</text>
+        </view>
       </view>
     </view>
 
@@ -277,8 +272,8 @@ const generateImage = async () => {
 <style scoped>
 .page-container {
   min-height: 100vh;
-  background-color: #f8f8f8;
-  padding-bottom: 160rpx; /* 为底部操作栏留出空间 */
+  background: linear-gradient(to bottom, #faf8f3 0%, #f5f1e8 100%);
+  padding-bottom: 240rpx; /* 为底部操作栏留出空间 */
 }
 
 .action-bar {
@@ -286,41 +281,114 @@ const generateImage = async () => {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 140rpx;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  border-top: 1rpx solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 100;
 }
 
+/* 风格切换工具栏 */
+.style-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.06);
+}
+
+.toolbar-label {
+  font-size: 26rpx;
+  color: #1f2937;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.style-options {
+  display: flex;
+  gap: 12rpx;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.style-options::-webkit-scrollbar {
+  display: none;
+}
+
+.style-option {
+  padding: 12rpx 24rpx;
+  background: #f3f4f6;
+  border-radius: 20rpx;
+  border: 1rpx solid transparent;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.style-option:active {
+  transform: scale(0.95);
+}
+
+.style-option.active {
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+}
+
+.style-name {
+  font-size: 24rpx;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.style-option.active .style-name {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 进度和生成按钮区域 */
+.action-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  gap: 16rpx;
+}
+
 .progress-info {
-  margin-bottom: 10rpx;
+  width: 100%;
+  text-align: center;
 }
 
 .progress-text {
   font-size: 24rpx;
-  color: #999;
+  color: #6b7280;
+  font-weight: 400;
 }
 
 .action-btn {
-  width: 600rpx;
+  width: 100%;
+  max-width: 600rpx;
   height: 80rpx;
-  background-color: #1890ff;
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
   border-radius: 40rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4rpx 12rpx rgba(24, 144, 255, 0.3);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
 }
 
 .action-text {
   font-size: 32rpx;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .canvas {
@@ -330,75 +398,5 @@ const generateImage = async () => {
   opacity: 0;
   pointer-events: none;
   z-index: -1;
-}
-
-/* 风格切换器 */
-.style-switcher {
-  background-color: #fff;
-  padding: 30rpx;
-  margin: 20rpx 30rpx;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-
-.switcher-header {
-  margin-bottom: 20rpx;
-}
-
-.switcher-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.style-options {
-  display: flex;
-  gap: 20rpx;
-  flex-wrap: wrap;
-}
-
-.style-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12rpx;
-  transition: all 0.3s ease;
-}
-
-.style-option:active {
-  transform: scale(0.95);
-}
-
-.style-preview {
-  width: 100rpx;
-  height: 60rpx;
-  border-radius: 8rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3rpx solid transparent;
-  transition: all 0.3s ease;
-}
-
-.style-option.active .style-preview {
-  border-color: #4a90e2;
-  transform: scale(1.05);
-}
-
-.preview-text {
-  font-size: 24rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.style-name {
-  font-size: 22rpx;
-  color: #666;
-  text-align: center;
-}
-
-.style-option.active .style-name {
-  color: #4a90e2;
-  font-weight: bold;
 }
 </style>

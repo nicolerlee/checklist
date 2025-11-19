@@ -1,7 +1,7 @@
 // 清单主题：人生已完成清单
 export default {
   id: 'life-completed',
-  name: '人生已完成清单',
+  name: '人生无小事',
   emoji: '✨',
   description: '记录人生中的重要时刻和成就',
   defaultStyle: 'avatar-warm',  // 推荐：头像温暖风格

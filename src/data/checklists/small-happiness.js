@@ -1,7 +1,7 @@
 // 清单主题：微小的确幸
 export default {
   id: 'small-happiness',
-  name: '微小的确幸',
+  name: '小确幸',
   emoji: '😊',
   description: '生活中的小美好',
   defaultStyle: 'simple',  // 推荐：简约清新风格
