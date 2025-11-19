@@ -1,10 +1,11 @@
 // 清单主题：人生已完成清单
 export default {
-  id: 'life-completed',
-  name: '人生无小事',
+  id: 'small-thing',
+  name: '经典时刻',
   emoji: '✨',
   description: '记录人生中的重要时刻和成就',
   defaultStyle: 'avatar-warm',  // 推荐：头像温暖风格
+  quote: '原来，我已经成为了自己想成为的大人。',
   items: [
     '第一次一个人旅行',
     '存下人生第一笔10万',
@@ -18,3 +19,4 @@ export default {
     '学会一个新技能'
   ]
 }
+

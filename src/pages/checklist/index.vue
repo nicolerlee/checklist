@@ -81,7 +81,8 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 
 // 导入清单主题
-import lifeCompleted from '../../data/checklists/life-completed.js'
+import smallThing from '../../data/checklists/small-thing.js'
+import life100 from '../../data/checklists/life-100.js'
 import foodMemories from '../../data/checklists/food-memories.js'
 import travelStories from '../../data/checklists/travel-stories.js'
 import workGrowth from '../../data/checklists/work-growth.js'
@@ -98,7 +99,8 @@ import VintageStyle from '../../styles/vintage-style.vue'
 import TagsStyle from '../../styles/tags-style.vue'
 
 const themes = {
-  'life-completed': lifeCompleted,
+  'small-thing': smallThing,
+  'life-100': life100,
   'food-memories': foodMemories,
   'travel-stories': travelStories,
   'work-growth': workGrowth,

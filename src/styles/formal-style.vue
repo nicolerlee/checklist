@@ -94,33 +94,25 @@ const drawCanvas = (ctx, canvas, config) => {
     const checkboxX = padding
     const checkboxY = y - checkboxSize / 2
     
+    // 绘制边框（选中和未选中都画边框）
+    ctx.strokeStyle = '#27ae60'
+    ctx.lineWidth = 3
+    ctx.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
+    
     if (item.checked) {
-      // 已勾选：绿色填充
-      ctx.fillStyle = '#27ae60'
-      ctx.fillRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
-      
-      // 对勾
-      ctx.strokeStyle = '#fff'
+      // 已勾选：只显示勾，不填充
+      ctx.strokeStyle = '#27ae60'
       ctx.lineWidth = 3
       ctx.beginPath()
       ctx.moveTo(checkboxX + 10, checkboxY + 21)
       ctx.lineTo(checkboxX + 18, checkboxY + 29)
       ctx.lineTo(checkboxX + 32, checkboxY + 15)
       ctx.stroke()
-      
-      ctx.fillStyle = '#2c3e50'
-    } else {
-      // 未勾选：绿色边框
-      ctx.strokeStyle = '#27ae60'
-      ctx.lineWidth = 3
-      ctx.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
-      
-      ctx.fillStyle = '#2c3e50'
-      ctx.globalAlpha = 0.7
     }
     
+    // 文字颜色保持一致
+    ctx.fillStyle = '#2c3e50'
     ctx.fillText(item.text, checkboxX + checkboxSize + 24, y)
-    ctx.globalAlpha = 1
     
     y += 60
   })
@@ -207,12 +199,13 @@ defineExpose({
 }
 
 .checkbox.checked {
-  background-color: #27ae60;
+  /* 选中后只显示勾，不填充背景 */
+  background-color: transparent;
   transform: scale(1.1);
 }
 
 .check-icon {
-  color: #fff;
+  color: #27ae60;
   font-size: 24rpx;
   font-weight: bold;
 }
@@ -227,8 +220,5 @@ defineExpose({
   line-height: 1.4;
 }
 
-.item-text.checked {
-  opacity: 0.7;
-}
 
 </style>

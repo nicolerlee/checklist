@@ -41,8 +41,8 @@
     </view>
 
     <!-- 感言区域 -->
-    <view class="quote-section">
-      <text class="quote-text">原来，我已经成为了自己想成为的大人。</text>
+    <view v-if="theme.quote" class="quote-section">
+      <text class="quote-text">{{ theme.quote }}</text>
     </view>
   </view>
 </template>
@@ -104,32 +104,24 @@ const drawCanvas = (ctx, canvas, config) => {
     const checkboxX = padding
     const checkboxY = y - checkboxSize / 2
     
+    // 绘制边框（选中和未选中都画边框）
+    ctx.strokeStyle = '#1890ff'
+    ctx.lineWidth = 4
+    ctx.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
+    
     if (item.checked) {
-      // 已勾选：蓝色填充 + 白色对勾
-      ctx.fillStyle = '#1890ff'
-      ctx.fillRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
-      
-      // 对勾
-      ctx.strokeStyle = '#fff'
+      // 已勾选：只显示勾，不填充
+      ctx.strokeStyle = '#1890ff'
       ctx.lineWidth = 4
       ctx.beginPath()
       ctx.moveTo(checkboxX + 12, checkboxY + 24)
       ctx.lineTo(checkboxX + 20, checkboxY + 32)
       ctx.lineTo(checkboxX + 36, checkboxY + 16)
       ctx.stroke()
-      
-      // 文字 - 已勾选用深色
-      ctx.fillStyle = '#1a1a1a'
-    } else {
-      // 未勾选：灰色边框 + 透明内部
-      ctx.strokeStyle = '#d0d0d0'
-      ctx.lineWidth = 2
-      ctx.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
-      
-      // 文字 - 未勾选用浅灰色
-      ctx.fillStyle = '#999999'
     }
     
+    // 文字颜色保持一致
+    ctx.fillStyle = '#1a1a1a'
     ctx.fillText(item.text, checkboxX + checkboxSize + 24, y)
     
     y += 75
@@ -137,10 +129,12 @@ const drawCanvas = (ctx, canvas, config) => {
   
   // 感言
   y += 40
-  ctx.fillStyle = '#1a1a1a'
-  ctx.font = '28px sans-serif'
-  ctx.textAlign = 'center'
-  ctx.fillText('原来，我已经成为了自己想成为的大人。', width / 2, y)
+  if (props.theme.quote) {
+    ctx.fillStyle = '#1a1a1a'
+    ctx.font = '28px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.fillText(props.theme.quote, width / 2, y)
+  }
 }
 
 // 暴露方法供父组件调用
@@ -330,13 +324,14 @@ const drawAvatar2D = (ctx, x, y, radius) => {
 }
 
 .checkbox.checked {
-  background-color: #1890ff;
+  /* 选中后只显示勾，不填充背景 */
+  background-color: transparent;
   transform: scale(1.05);
   border-color: #1890ff;
 }
 
 .check-icon {
-  color: #fff;
+  color: #1890ff;
   font-size: 28rpx;
   font-weight: 900;
   line-height: 1;
@@ -352,9 +347,6 @@ const drawAvatar2D = (ctx, x, y, radius) => {
   line-height: 1.4;
 }
 
-.item-text.checked {
-  opacity: 0.7;
-}
 
 /* 感言区域 */
 .quote-section {

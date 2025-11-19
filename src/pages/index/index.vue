@@ -37,7 +37,8 @@ import { ref } from 'vue'
 import ThemeCard from '../../components/theme-card/theme-card.vue'
 
 // 导入清单主题
-import lifeCompleted from '../../data/checklists/life-completed.js'
+import smallThing from '../../data/checklists/small-thing.js'
+import life100 from '../../data/checklists/life-100.js'
 import foodMemories from '../../data/checklists/food-memories.js'
 import travelStories from '../../data/checklists/travel-stories.js'
 import workGrowth from '../../data/checklists/work-growth.js'
@@ -47,7 +48,8 @@ import smallHappiness from '../../data/checklists/small-happiness.js'
 import movies from '../../data/checklists/movies.js'
 
 const themes = ref([
-  lifeCompleted,
+  smallThing,
+  life100,
   foodMemories,
   travelStories,
   workGrowth,

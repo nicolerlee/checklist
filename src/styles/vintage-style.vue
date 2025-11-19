@@ -29,8 +29,8 @@
     </view>
 
     <!-- 感言区域 -->
-    <view class="quote-section">
-      <text class="quote-text">原来，我已经成为了自己想成为的大人。</text>
+    <view v-if="theme.quote" class="quote-section">
+      <text class="quote-text">{{ theme.quote }}</text>
     </view>
 
     <!-- 装饰花 -->
@@ -112,38 +112,30 @@ const drawCanvas = (ctx, canvas, config) => {
     const checkboxX = padding
     const checkboxY = y - checkboxSize / 2
     
+    // 绘制边框（选中和未选中都画边框）
+    ctx.strokeStyle = '#8b6914'
+    ctx.lineWidth = 4
+    ctx.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
+    
     if (item.checked) {
-      // 已勾选：棕色填充
-      ctx.fillStyle = '#8b6914'
-      ctx.fillRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
-      
-      // 对勾
-      ctx.strokeStyle = '#fff'
+      // 已勾选：只显示勾，不填充
+      ctx.strokeStyle = '#8b6914'
       ctx.lineWidth = 4
       ctx.beginPath()
       ctx.moveTo(checkboxX + 8, checkboxY + 20)
       ctx.lineTo(checkboxX + 16, checkboxY + 28)
       ctx.lineTo(checkboxX + 32, checkboxY + 12)
       ctx.stroke()
-      
-      ctx.fillStyle = '#8b6914'
-    } else {
-      // 未勾选：棕色边框
-      ctx.strokeStyle = '#8b6914'
-      ctx.lineWidth = 4
-      ctx.strokeRect(checkboxX, checkboxY, checkboxSize, checkboxSize)
-      
-      ctx.fillStyle = '#8b6914'
-      ctx.globalAlpha = 0.7
     }
     
+    // 文字颜色保持一致
+    ctx.fillStyle = '#8b6914'
     ctx.shadowColor = 'rgba(0, 0, 0, 0.05)'
     ctx.shadowBlur = 1
     ctx.shadowOffsetX = 1
     ctx.shadowOffsetY = 1
     ctx.fillText(item.text, checkboxX + checkboxSize + 24, y)
     ctx.shadowBlur = 0
-    ctx.globalAlpha = 1
     
     y += 60
   })
@@ -157,7 +149,9 @@ const drawCanvas = (ctx, canvas, config) => {
   ctx.shadowBlur = 1
   ctx.shadowOffsetX = 1
   ctx.shadowOffsetY = 1
-  ctx.fillText('原来，我已经成为了自己想成为的大人。', width / 2, y)
+  if (props.theme.quote) {
+    ctx.fillText(props.theme.quote, width / 2, y)
+  }
   ctx.shadowBlur = 0
   
   // 装饰花
@@ -268,12 +262,13 @@ defineExpose({
 }
 
 .checkbox.checked {
-  background-color: #8b6914;
+  /* 选中后只显示勾，不填充背景 */
+  background-color: transparent;
   transform: scale(1.1);
 }
 
 .check-icon {
-  color: #fff;
+  color: #8b6914;
   font-size: 22rpx;
   font-weight: bold;
 }
@@ -290,9 +285,6 @@ defineExpose({
   text-shadow: 1rpx 1rpx 2rpx rgba(0,0,0,0.05);
 }
 
-.item-text.checked {
-  opacity: 0.7;
-}
 
 /* 感言区域 */
 .quote-section {
