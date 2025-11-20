@@ -12,6 +12,15 @@
       }
     },
     {
+      "path": "pages/gallery/index",
+      "style": {
+        "navigationBarTitleText": "作品集",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationStyle": "default"
+      }
+    },
+    {
       "path": "pages/checklist/index",
       "style": {
         "navigationBarTitleText": "足迹",
@@ -32,5 +41,21 @@
     "navigationBarTitleText": "足迹",
     "navigationBarBackgroundColor": "#faf8f3",
     "backgroundColor": "#faf8f3"
+  },
+  "tabBar": {
+    "color": "#7a7e83",
+    "selectedColor": "#d4a574",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/gallery/index",
+        "text": "作品集"
+      }
+    ]
   }
 }
