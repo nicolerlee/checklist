@@ -1,5 +1,10 @@
 <template>
   <view class="container">
+    <!-- 标题 -->
+    <view class="title-section">
+      <text class="title">{{ theme.name }}</text>
+    </view>
+
     <!-- 头像 -->
     <view class="avatar-section">
       <view class="avatar">
@@ -13,11 +18,6 @@
           <view class="shirt"></view>
         </view>
       </view>
-    </view>
-
-    <!-- 标题 -->
-    <view class="title-section">
-      <text class="title">{{ theme.name }}</text>
     </view>
 
     <!-- 清单项列表 -->
@@ -127,11 +127,7 @@ const drawCanvas = (ctx, canvas, config) => {
   
   let y = padding + 20
   
-  // 头像
-  drawAvatar2D(ctx, width / 2, y + 50, 50)
-  y += 120
-  
-  // 标题
+  // 标题（先绘制标题，放在图像上方）
   ctx.fillStyle = '#1a1a1a'
   ctx.font = 'bold 48px sans-serif'
   ctx.textAlign = 'center'
@@ -139,15 +135,21 @@ const drawCanvas = (ctx, canvas, config) => {
   ctx.fillText(props.theme.name, width / 2, y)
   y += 80
   
+  // 头像（与 checkbox 对齐，图像尺寸再改小，从 radius 40 改为 30）
+  const checkboxSize = 48 // 与下方 checkbox 尺寸一致
+  const avatarX = padding + checkboxSize / 2 // 与 checkbox 中心对齐
+  drawAvatar2D(ctx, avatarX, y + 30, 30)
+  y += 120 // 增加头像和文字之间的距离，从 80 改为 120（仅生图时）
+  
   // 清单项 - 显示所有项目
   ctx.textAlign = 'left'
   ctx.font = '34px sans-serif'
   ctx.textBaseline = 'middle'
   
   props.items.forEach((item, index) => {
-    // 复选框
+    // 复选框 - 与头像中心对齐
     const checkboxSize = 48
-    const checkboxX = padding
+    const checkboxX = avatarX - checkboxSize / 2 // checkbox 中心与头像中心对齐
     const checkboxY = y - checkboxSize / 2
     
     // 绘制边框（选中和未选中都画边框）
@@ -202,7 +204,7 @@ defineExpose({
 })
 
 const drawAvatar2D = (ctx, x, y, radius) => {
-  // 绘制简化的卡通头像（Canvas 2D API）
+  // 绘制女性卡通头像（Canvas 2D API）
   ctx.save()
   ctx.beginPath()
   ctx.arc(x, y, radius, 0, 2 * Math.PI)
@@ -213,13 +215,50 @@ const drawAvatar2D = (ctx, x, y, radius) => {
   ctx.fillStyle = '#fdbcb4'
   ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2)
   
-  // 头发
+  // 长头发（女性特征 - 长发）
   ctx.fillStyle = '#2d2d2d'
-  ctx.fillRect(x - radius * 0.8, y - radius, radius * 1.6, radius * 1.2)
+  // 顶部头发
+  ctx.beginPath()
+  ctx.arc(x, y - radius * 0.3, radius * 0.9, 0, Math.PI * 2)
+  ctx.fill()
+  // 两侧长发
+  ctx.beginPath()
+  ctx.ellipse(x - radius * 0.6, y + radius * 0.1, radius * 0.4, radius * 0.7, 0, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.beginPath()
+  ctx.ellipse(x + radius * 0.6, y + radius * 0.1, radius * 0.4, radius * 0.7, 0, 0, Math.PI * 2)
+  ctx.fill()
   
-  // 衣服
-  ctx.fillStyle = '#ff6b6b'
-  ctx.fillRect(x - radius, y + radius * 0.2, radius * 2, radius * 0.8)
+  // 眼睛（女性 - 更大更柔和）
+  ctx.fillStyle = '#2d2d2d'
+  ctx.beginPath()
+  ctx.arc(x - radius * 0.25, y - radius * 0.1, radius * 0.12, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.beginPath()
+  ctx.arc(x + radius * 0.25, y - radius * 0.1, radius * 0.12, 0, Math.PI * 2)
+  ctx.fill()
+  
+  // 嘴巴（女性 - 微笑）
+  ctx.strokeStyle = '#ff6b6b'
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.arc(x, y + radius * 0.15, radius * 0.2, 0, Math.PI)
+  ctx.stroke()
+  
+  // 腮红（女性特征）
+  ctx.fillStyle = '#ffb3ba'
+  ctx.globalAlpha = 0.3
+  ctx.beginPath()
+  ctx.arc(x - radius * 0.4, y + radius * 0.1, radius * 0.15, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.beginPath()
+  ctx.arc(x + radius * 0.4, y + radius * 0.1, radius * 0.15, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.globalAlpha = 1
+  
+  // 衣服（女性化）
+  ctx.fillStyle = '#ff9faa'
+  ctx.fillRect(x - radius * 0.6, y + radius * 0.3, radius * 1.2, radius * 0.7)
   
   ctx.restore()
   
@@ -244,13 +283,14 @@ const drawAvatar2D = (ctx, x, y, radius) => {
 /* 头像区域 */
 .avatar-section {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* 左对齐，与 checkbox 对齐 */
   margin-bottom: 30rpx;
+  padding-left: 30rpx; /* 与 checkbox 的 padding 对齐 */
 }
 
 .avatar {
-  width: 120rpx;
-  height: 120rpx;
+  width: 70rpx; /* 图像尺寸再改小，从 90rpx 改为 70rpx */
+  height: 70rpx;
   position: relative;
 }
 
@@ -267,12 +307,33 @@ const drawAvatar2D = (ctx, x, y, radius) => {
 
 .hair {
   position: absolute;
-  top: 0;
-  left: 15%;
-  right: 15%;
-  height: 60%;
+  top: -5%;
+  left: 10%;
+  right: 10%;
+  height: 70%;
   background-color: #2d2d2d;
-  border-radius: 50rpx 50rpx 0 0;
+  border-radius: 50%;
+  /* 女性长发特征 - 延伸到两侧 */
+}
+.hair::before {
+  content: '';
+  position: absolute;
+  left: -15%;
+  top: 40%;
+  width: 30%;
+  height: 50%;
+  background-color: #2d2d2d;
+  border-radius: 50%;
+}
+.hair::after {
+  content: '';
+  position: absolute;
+  right: -15%;
+  top: 40%;
+  width: 30%;
+  height: 50%;
+  background-color: #2d2d2d;
+  border-radius: 50%;
 }
 
 .face {
@@ -321,7 +382,7 @@ const drawAvatar2D = (ctx, x, y, radius) => {
 
 /* 标题 */
 .title-section {
-  margin-bottom: 50rpx;
+  margin-bottom: 30rpx; /* 标题和头像之间的间距 */
 }
 
 .title {
@@ -362,6 +423,7 @@ const drawAvatar2D = (ctx, x, y, radius) => {
   align-items: center;
   gap: 24rpx;
   padding: 16rpx 0;
+  padding-left: 41rpx; /* checkbox 右移，与头像中心对齐（头像padding-left 30rpx，宽度70rpx，中心在30+35=65rpx；checkbox宽度48rpx，中心要在65rpx，左边缘在65-24=41rpx） */
   transition: all 0.3s ease;
 }
 

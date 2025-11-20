@@ -4,8 +4,8 @@ export default {
   name: '人际社交暴走区',
   emoji: '😰',
   description: '社交恐惧症的日常内心戏',
-  defaultStyle: 'simple',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  defaultStyle: 'normal',
+  availableStyles: [ 'avatar-warm', 'normal', 'vintage', 'formal'],
   quote: '每个标点符号都值得我分析三遍。',
   items: [
     '别人回"嗯"，我以为他生气',

@@ -4,8 +4,8 @@ export default {
   name: '恋爱脑狂暴模式',
   emoji: '💕',
   description: '陷入爱情时的大脑短路日常',
-  defaultStyle: 'simple',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  defaultStyle: 'normal',
+  availableStyles: ['avatar-warm', 'normal', 'vintage', 'formal'],
   quote: '一个表情包，我能写出一本言情小说。',
   items: [
     '暗恋对象发表情，我解读三万字',

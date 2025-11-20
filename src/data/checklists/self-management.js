@@ -4,8 +4,8 @@ export default {
   name: '精神分裂式自我管理',
   emoji: '📋',
   description: '计划很完美，执行很拉胯的日常',
-  defaultStyle: 'simple',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  defaultStyle: 'normal',
+  availableStyles: [ 'avatar-warm', 'normal', 'vintage', 'formal'],
   quote: '我的人生就是一部计划与现实的对抗史。',
   items: [
     '做计划像军队司令',

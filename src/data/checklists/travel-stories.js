@@ -4,8 +4,8 @@ export default {
   name: '路上的风景',
   emoji: '🚇',
   description: '旅行出行的美好回忆',
-  defaultStyle: 'simple',  // 推荐：简约清新风格
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  defaultStyle: 'normal',  // 推荐：简约清新风格
+  availableStyles: [ 'avatar-warm', 'normal', 'vintage', 'formal'],
   items: [
     '坐过最后一班地铁或公交，看着空荡的车厢发呆',
     '在火车上，和邻座的陌生人聊了一路',

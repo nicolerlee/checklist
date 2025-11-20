@@ -4,8 +4,8 @@ export default {
   name: '社死碎碎念区',
   emoji: '😱',
   description: '那些想立刻消失在地球上的瞬间',
-  defaultStyle: 'simple',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  defaultStyle: 'normal',
+  availableStyles: ['avatar-warm', 'normal', 'vintage', 'formal'],
   quote: '社死是人生的必经之路，我已经走成高速公路了。',
   items: [
     '走路突然撞到门把手',

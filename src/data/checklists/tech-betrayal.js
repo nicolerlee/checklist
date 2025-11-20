@@ -4,8 +4,8 @@ export default {
   name: '电子设备背叛我',
   emoji: '📱',
   description: '科技产品的那些社死瞬间',
-  defaultStyle: 'simple',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  defaultStyle: 'normal',
+  availableStyles: ['avatar-warm', 'normal', 'vintage', 'formal'],
   quote: '我以为我在控制手机，其实是手机在控制我。',
   items: [
     '夜深开视频音量最大',

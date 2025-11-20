@@ -338,7 +338,7 @@ const drawCanvas = async (ctx, canvas, config) => {
   
   // 清单项 - 显示所有项目（在白色卡片内）
   ctx.textAlign = 'left'
-  ctx.font = 'normal 30px -apple-system, BlinkMacSystemFont, sans-serif'
+  ctx.font = 'normal 34px -apple-system, BlinkMacSystemFont, sans-serif'
   ctx.textBaseline = 'middle'
   
   props.items.forEach((item, index) => {
@@ -369,13 +369,13 @@ const drawCanvas = async (ctx, canvas, config) => {
     // 计算可用宽度
     const textX = checkboxX + checkboxSize + 20
     const maxTextWidth = cardX + cardWidth - textX - padding
-    const lineHeight = 38
+    const lineHeight = 46 // 行高增大，从 38 改为 46（仅生图时）
     
     // 绘制多行文字
     const textHeight = drawMultilineText(ctx, item.text, textX, cardContentY - lineHeight / 2, maxTextWidth, lineHeight)
     
-    // 根据实际文字高度调整 y 坐标
-    cardContentY += Math.max(56, textHeight)
+    // 根据实际文字高度调整 y 坐标，行间距增大（仅生图时）
+    cardContentY += Math.max(70, textHeight + 12) // 增大行间距，从 56 改为 70，并额外增加 12px
   })
 }
 

@@ -4,8 +4,8 @@ export default {
   name: '精神失常加成区',
   emoji: '🧠',
   description: '大脑的各种神奇操作模式',
-  defaultStyle: 'simple',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  defaultStyle: 'normal',
+  availableStyles: ['normal', 'avatar-warm', 'normal', 'vintage', 'formal'],
   quote: '我的大脑是个戏精，每天都在上演内心大戏。',
   items: [
     '听到喜欢的歌瞬间emo',

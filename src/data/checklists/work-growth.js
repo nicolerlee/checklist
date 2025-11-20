@@ -5,7 +5,7 @@ export default {
   emoji: '💼',
   description: '工作成长的珍贵经历',
   defaultStyle: 'formal',  // 推荐：正式简洁风格
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  availableStyles: [ 'avatar-warm', 'normal', 'vintage', 'formal'],
   items: [
     '收到过一封手写的、字迹歪扭的感谢信或卡片',
     '加班到凌晨，看过城市从喧嚣到寂静再到苏醒',
