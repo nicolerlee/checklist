@@ -1,7 +1,7 @@
 // 清单主题：人生已完成清单
 export default {
   id: 'small-thing',
-  name: '属于你的日常仪式',
+  name: '人生的发光片段',
   emoji: '✨',
   description: '记录人生中的重要时刻和成就',
   defaultStyle: 'avatar-warm',  // 推荐：头像温暖风格

@@ -1,13 +1,14 @@
 <template>
   <view class="container">
-    <!-- 装饰图案 -->
-    <view class="decoration">
-      <view class="decoration-branch"></view>
-    </view>
-    
-    <!-- 标题 -->
-    <view class="title-section">
-      <text class="title">{{ theme.name }}</text>
+    <!-- 顶部图片 -->
+    <view class="header-image">
+      <image 
+        src="/static/images/simple-style.png" 
+        mode="aspectFit"
+        class="header-img"
+        @error="handleImageError"
+        @load="handleImageLoad"
+      />
     </view>
 
     <!-- 清单项列表 - 白色背景卡片 -->
@@ -56,6 +57,21 @@ const checkedCount = computed(() => {
 
 const toggleItem = (index) => {
   emit('toggle', index)
+}
+
+// 图片路径 - 使用 @ 别名或相对路径（在 uni-app 中更可靠）
+// 在开发环境可能需要使用 @/static/，在生产环境可能需要 /static/
+const headerImagePath = '@/static/images/simple-style.png'
+
+// 图片加载处理
+const handleImageError = (e) => {
+  console.error('图片加载失败:', e)
+  console.error('尝试的路径:', headerImagePath)
+}
+
+const handleImageLoad = (e) => {
+  console.log('图片加载成功', e)
+  console.log('图片尺寸:', e.detail?.width, e.detail?.height)
 }
 
 // 绘制多行文字（自动换行）
@@ -143,29 +159,173 @@ const drawBranch = (ctx, x, y, size) => {
 }
 
 // 绘制Canvas的方法，供父组件调用
-const drawCanvas = (ctx, canvas, config) => {
+const drawCanvas = async (ctx, canvas, config) => {
   const { width, height, padding = 60 } = config
   
   // 背景 - 淡粉色
   ctx.fillStyle = '#fef5f0'
   ctx.fillRect(0, 0, width, height)
   
-  let y = padding + 60
+  let y = padding
   
-  // 装饰枝条（在淡粉色背景上）
-  drawBranch(ctx, width / 2, y, 80)
-  y += 80
+  // 绘制顶部图片（16:9 比例，直接按屏幕宽度自适应）
+  // 图片宽度和清单卡片宽度保持一致
+  const cardPadding = 30 // 卡片左右边距，与下方卡片保持一致
+  const availableWidth = width - cardPadding * 2
+  const imgWidth = availableWidth
+  const imgHeight = imgWidth * 9 / 16 // 16:9 比例，高度自适应
+  const imgX = cardPadding // 与卡片左对齐
   
-  // 标题 - 深棕色，手写字体（在淡粉色背景上）
-  ctx.fillStyle = '#5c4a37'
-  ctx.font = 'bold 56px "KaiTi", "STKaiti", "楷体", cursive, serif'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'top'
-  ctx.fillText(props.theme.name, width / 2, y)
-  y += 100
+  // 在微信小程序的 Canvas 2D API 中，drawImage 需要 Image 对象，不能直接使用字符串路径
+  // 正确的做法：
+  // 1. 使用 uni.getImageInfo 获取图片的本地路径
+  // 2. 使用 canvas.createImage() 创建 Image 对象
+  // 3. 将 getImageInfo 返回的路径赋值给 Image 对象的 src
+  // 4. 等待图片加载完成后，使用 Image 对象调用 drawImage
   
-  // 白色卡片区域
-  const cardPadding = 30
+  if (typeof uni !== 'undefined') {
+    // uni-app 环境（微信小程序）
+    await new Promise((resolve) => {
+      // 尝试多种路径格式
+      // 1. 使用 @ 别名
+      // 2. 使用绝对路径 /static/
+      // 3. 使用相对路径
+      const tryPaths = [
+        '@/static/images/simple-style.png',
+        '/static/images/simple-style.png',
+        'static/images/simple-style.png',
+        headerImagePath
+      ]
+      
+      let currentPathIndex = 0
+      
+      const tryGetImageInfo = (path) => {
+        // 先获取图片信息
+        uni.getImageInfo({
+          src: path,
+          success: (res) => {
+            console.log('获取图片信息成功:', res.path)
+            console.log('图片信息:', res)
+          
+            // 在微信小程序 Canvas 2D API 中，drawImage 可以直接使用 getImageInfo 返回的 path
+            // 但需要确保 path 是正确的本地路径格式
+            // res.path 应该是类似 "http://tmp/" 或 "wxfile://" 开头的本地路径
+            
+            // 在微信小程序 Canvas 2D API 中，必须使用 canvas.createImage() 创建 Image 对象
+            // drawImage 不能直接使用字符串路径
+            if (canvas && typeof canvas.createImage === 'function') {
+              const img = canvas.createImage()
+              
+              img.onload = () => {
+                try {
+                  ctx.drawImage(img, imgX, y, imgWidth, imgHeight)
+                  console.log('图片绘制成功 (createImage):', res.path)
+                  y += imgHeight // 去掉 + 40，让图片和 checklist 紧贴
+                } catch (drawErr) {
+                  console.error('Canvas drawImage 失败:', drawErr)
+                  console.error('使用的图片路径:', res.path)
+                  // 即使失败也继续，留出空白区域
+                  y += imgHeight // 去掉 + 40
+                }
+                resolve()
+              }
+              
+              img.onerror = (err) => {
+                console.error('图片加载失败 (createImage):', res.path)
+                console.error('错误详情:', err)
+                console.error('原始路径:', path)
+                
+                // 如果相对路径失败，尝试使用原始绝对路径
+                if (res.path !== path && path.startsWith('/')) {
+                  console.log('尝试使用原始绝对路径:', path)
+                  img.src = path
+                } else {
+                  // 加载失败时，留出空白区域
+                  y += imgHeight // 去掉 + 40
+                  resolve()
+                }
+              }
+              
+              // 优先使用原始绝对路径，因为更可靠
+              // 如果 res.path 是完整的本地路径（包含协议），使用 res.path
+              // 否则使用原始路径 path（绝对路径）
+              let srcPath = res.path
+              
+              // 检查 res.path 是否是完整的路径
+              // 完整的路径应该以 http://、https://、wxfile:// 开头，或者是绝对路径 /
+              if (srcPath.startsWith('http://') || 
+                  srcPath.startsWith('https://') || 
+                  srcPath.startsWith('wxfile://') ||
+                  srcPath.startsWith('/')) {
+                // 是完整路径，可以使用
+                console.log('使用 getImageInfo 返回的路径:', srcPath)
+              } else {
+                // 是相对路径，使用原始绝对路径
+                console.warn('getImageInfo 返回的是相对路径，使用原始绝对路径')
+                console.warn('res.path:', srcPath)
+                console.warn('使用原始路径:', path)
+                srcPath = path
+              }
+              
+              console.log('设置 Image src 为:', srcPath)
+              img.src = srcPath
+            } else {
+              // 如果 createImage 也不可用，只能留出空白区域
+              console.error('canvas.createImage 不可用')
+              y += imgHeight // 去掉 + 40
+              resolve()
+            }
+          },
+          fail: (err) => {
+            console.warn(`路径 ${path} 获取图片信息失败，尝试下一个路径`)
+            
+            // 尝试下一个路径
+            currentPathIndex++
+            if (currentPathIndex < tryPaths.length) {
+              const nextPath = tryPaths[currentPathIndex]
+              console.log(`尝试路径 ${currentPathIndex + 1}/${tryPaths.length}:`, nextPath)
+              tryGetImageInfo(nextPath)
+            } else {
+              // 所有路径都失败了
+              console.error('所有路径都失败，无法获取图片信息')
+              console.error('尝试的路径列表:', tryPaths)
+              console.error('最后一个错误:', err)
+              // 获取失败时，留出空白区域
+              y += imgHeight // 去掉 + 40
+              resolve()
+            }
+          }
+        })
+      }
+      
+      // 开始尝试第一个路径
+      console.log(`开始尝试路径 1/${tryPaths.length}:`, tryPaths[0])
+      tryGetImageInfo(tryPaths[0])
+    })
+  } else {
+    // 非 uni-app 环境（如浏览器），使用标准 Image 对象
+    await new Promise((resolve) => {
+      const img = new Image()
+      img.onload = () => {
+        try {
+          ctx.drawImage(img, imgX, y, imgWidth, imgHeight)
+          y += imgHeight // 去掉 + 40
+        } catch (err) {
+          console.error('Canvas 图片绘制失败:', err)
+          y += imgHeight // 去掉 + 40
+        }
+        resolve()
+      }
+      img.onerror = () => {
+        console.error('图片加载失败:', headerImagePath)
+        y += imgHeight // 去掉 + 40
+        resolve()
+      }
+      img.src = headerImagePath
+    })
+  }
+  
+  // 白色卡片区域（使用上方已定义的 cardPadding）
   const cardX = cardPadding
   const cardY = y
   const cardWidth = width - cardPadding * 2
@@ -231,80 +391,34 @@ defineExpose({
   position: relative;
 }
 
+/* 顶部图片 - 16:9 宽高比容器 */
+.header-image {
+  position: relative;
+  width: 100%;
+  max-width: 600rpx;
+  margin: 20rpx auto 0; /* 去掉底部 margin，让图片和卡片紧贴 */
+  /* 16:9 宽高比：使用 padding-bottom 技巧（兼容性更好） */
+  padding-bottom: 56.25%; /* 9 / 16 = 0.5625 = 56.25% */
+  height: 0;
+  overflow: hidden;
+}
+
+.header-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* 白色清单项卡片 */
 .items-card {
   background-color: #ffffff;
   border-radius: 24rpx;
   padding: 30rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
-  margin-top: 20rpx;
-}
-
-/* 装饰图案 */
-.decoration {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24rpx;
-  margin-top: 20rpx;
-}
-
-.decoration-branch {
-  width: 140rpx;
-  height: 60rpx;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.decoration-branch::before,
-.decoration-branch::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 1.5rpx;
-  height: 45rpx;
-  background: #a68b6b;
-  border-radius: 1rpx;
-  opacity: 0.5;
-}
-
-.decoration-branch::before {
-  left: 30%;
-  transform: rotate(-18deg);
-  transform-origin: top center;
-}
-
-.decoration-branch::after {
-  right: 30%;
-  transform: rotate(18deg);
-  transform-origin: top center;
-}
-
-/* 叶子装饰 - 小圆点 */
-.decoration-branch {
-  background-image: 
-    radial-gradient(circle at 28% 40%, #a68b6b 2.5rpx, transparent 2.5rpx),
-    radial-gradient(circle at 72% 40%, #a68b6b 2.5rpx, transparent 2.5rpx);
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* 标题 - 温暖米色风格 */
-.title-section {
-  margin-bottom: 30rpx;
-}
-
-.title {
-  font-size: 56rpx;
-  font-weight: bold;
-  font-family: "KaiTi", "STKaiti", "楷体", cursive, serif;
-  color: #5c4a37;
-  text-align: center;
-  display: block;
-  letter-spacing: 1rpx;
-  line-height: 1.2;
+  margin-top: 0; /* 去掉顶部 margin，让卡片紧贴图片 */
 }
 
 /* 清单项 */
