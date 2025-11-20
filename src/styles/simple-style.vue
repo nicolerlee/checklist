@@ -168,12 +168,12 @@ const drawCanvas = async (ctx, canvas, config) => {
   
   let y = padding
   
-  // 绘制顶部图片（16:9 比例，直接按屏幕宽度自适应）
+  // 绘制顶部图片（根据实际图片比例 1458x458，宽高比约 3.18:1）
   // 图片宽度和清单卡片宽度保持一致
   const cardPadding = 30 // 卡片左右边距，与下方卡片保持一致
   const availableWidth = width - cardPadding * 2
   const imgWidth = availableWidth
-  const imgHeight = imgWidth * 9 / 16 // 16:9 比例，高度自适应
+  const imgHeight = imgWidth * 458 / 1458 // 图片实际比例，高度自适应
   const imgX = cardPadding // 与卡片左对齐
   
   // 在微信小程序的 Canvas 2D API 中，drawImage 需要 Image 对象，不能直接使用字符串路径
@@ -326,10 +326,11 @@ const drawCanvas = async (ctx, canvas, config) => {
   }
   
   // 白色卡片区域（使用上方已定义的 cardPadding）
+  // 图片和卡片背景连接在一起，但文字内容区域有上方 padding
   const cardX = cardPadding
-  const cardY = y
+  const cardY = y // 卡片从图片底部开始，连接在一起
   const cardWidth = width - cardPadding * 2
-  let cardContentY = cardY + padding
+  let cardContentY = cardY + padding // 文字内容区域上方添加 padding，增加空白（仅生图时）
   
   // 绘制白色背景卡片
   ctx.fillStyle = '#ffffff'
@@ -342,7 +343,8 @@ const drawCanvas = async (ctx, canvas, config) => {
   
   props.items.forEach((item, index) => {
     const checkboxSize = 36
-    const checkboxX = cardX + padding
+    const leftOffset = -20 // checkbox 和文字整体往左移动 20px（仅生图时）
+    const checkboxX = cardX + padding + leftOffset
     const checkboxY = cardContentY - checkboxSize / 2
     
     // 绘制边框（选中和未选中都画边框）- 棕色
@@ -391,16 +393,17 @@ defineExpose({
   position: relative;
 }
 
-/* 顶部图片 - 16:9 宽高比容器 */
+/* 顶部图片 - 根据实际图片比例自适应 */
 .header-image {
   position: relative;
   width: 100%;
   max-width: 600rpx;
   margin: 20rpx auto 0; /* 去掉底部 margin，让图片和卡片紧贴 */
-  /* 16:9 宽高比：使用 padding-bottom 技巧（兼容性更好） */
-  padding-bottom: 56.25%; /* 9 / 16 = 0.5625 = 56.25% */
+  /* 图片实际尺寸 1458x458，宽高比约 3.18:1，高度占宽度的 31.4% */
+  padding-bottom: 31.4%; /* 458 / 1458 ≈ 0.314 */
   height: 0;
   overflow: hidden;
+  border-radius: 0; /* 确保容器是直角 */
 }
 
 .header-img {
@@ -410,13 +413,14 @@ defineExpose({
   width: 100%;
   height: 100%;
   display: block;
+  border-radius: 0; /* 确保图片是直角 */
 }
 
 /* 白色清单项卡片 */
 .items-card {
   background-color: #ffffff;
-  border-radius: 24rpx;
-  padding: 30rpx;
+  border-radius: 0; /* 改为直角，不要圆角 */
+  padding: 0 30rpx 30rpx; /* 移除顶部 padding，让列表项紧贴标题 */
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
   margin-top: 0; /* 去掉顶部 margin，让卡片紧贴图片 */
 }
@@ -427,6 +431,7 @@ defineExpose({
   flex-direction: column;
   gap: 24rpx;
   margin-bottom: 40rpx;
+  padding-top: 0; /* 确保顶部无间距 */
 }
 
 .item-wrapper {

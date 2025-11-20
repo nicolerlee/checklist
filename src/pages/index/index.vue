@@ -67,7 +67,7 @@ const selectTheme = (theme) => {
   position: relative;
   width: calc(100% - 60rpx);
   height: 360rpx;
-  margin: 0 auto;
+  margin: 0 auto; /* 移除顶部间距，图片紧贴顶部 */
   border-radius: 0 0 32rpx 32rpx;
   overflow: hidden;
   box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);

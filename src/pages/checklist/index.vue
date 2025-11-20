@@ -141,7 +141,7 @@ const allStyles = [
   { id: 'vintage', name: '复古温馨', bgColor: '#f9f3e8' },
   { id: 'tags', name: '标签云', bgColor: '#e6f7ff' },
   { id: 'tags2', name: '标签云2', bgColor: '#ffffff' },
-  { id: 'crazy', name: '沙雕精神病', bgColor: '#ffeef8' }
+  { id: 'crazy', name: '不规则', bgColor: '#ffeef8' }
 ]
 
 // 当前主题可用的样式（根据主题配置动态计算）

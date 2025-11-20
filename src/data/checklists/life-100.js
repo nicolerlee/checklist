@@ -6,7 +6,7 @@ export default {
   description: '记录生活中的美好瞬间',
   defaultStyle: 'tags',  // 推荐：简约清新风格
   // 可用的样式列表（可选，如果不定义则使用所有样式）
-  availableStyles: ['tags', 'tags2'],
+  availableStyles: ['tags', 'tags2', 'crazy'],
   items: [
     '跑马拉松',
     '跳伞',

@@ -1,11 +1,11 @@
-// 清单主题：生活混乱制造机
+// 清单主题：生活混乱制造机，小丑回忆录
 export default {
   id: 'life-chaos',
-  name: '生活混乱制造机',
+  name: '小丑回忆录',
   emoji: '🤯',
   description: '那些让你怀疑自己智商的时刻',
   defaultStyle: 'crazy',
-  availableStyles: ['crazy', 'simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
+  availableStyles: ['crazy', 'tags', 'tags2'],
   quote: '我可能是生活派来考验自己的。',
   items: [
     '出门忘带钥匙',
