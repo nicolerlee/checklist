@@ -236,17 +236,17 @@ const handleImageError = (e, item) => {
   background: linear-gradient(135deg, #f5f1e8 0%, #e8e0d0 100%);
 }
 
-/* 不同卡片高度的图片区域 */
+/* 不同卡片高度的图片区域 - 增强错落感 */
 .card-height-0 .card-image-wrapper {
-  height: 420rpx;
+  height: 360rpx;
 }
 
 .card-height-1 .card-image-wrapper {
-  height: 500rpx;
+  height: 560rpx;
 }
 
 .card-height-2 .card-image-wrapper {
-  height: 460rpx;
+  height: 440rpx;
 }
 
 .card-image {
