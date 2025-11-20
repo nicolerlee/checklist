@@ -5,6 +5,7 @@ export default {
   emoji: '🎵',
   description: '音乐电影艺术的美好时光',
   defaultStyle: 'vintage',  // 推荐：复古温馨风格
+  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
   items: [
     '有一首一听前奏就会愣住的歌，关联着某个人某段时光',
     '在KTV里，声嘶力竭地和朋友唱过一首跑调的歌',

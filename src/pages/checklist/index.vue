@@ -36,6 +36,27 @@
       :theme="currentTheme"
       @toggle="toggleItem"
     />
+    <tags-style2 
+      v-else-if="currentStyleId === 'tags2'"
+      ref="currentStyleRef"
+      :items="items"
+      :theme="currentTheme"
+      @toggle="toggleItem"
+    />
+    <crazy-style 
+      v-else-if="currentStyleId === 'crazy'"
+      ref="currentStyleRef"
+      :items="items"
+      :theme="currentTheme"
+      @toggle="toggleItem"
+    />
+    <normal-style 
+      v-else-if="currentStyleId === 'normal'"
+      ref="currentStyleRef"
+      :items="items"
+      :theme="currentTheme"
+      @toggle="toggleItem"
+    />
 
     <!-- 底部操作栏（公共） -->
     <view class="action-bar">
@@ -80,51 +101,60 @@
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 
-// 导入清单主题
-import smallThing from '../../data/checklists/small-thing.js'
-import life100 from '../../data/checklists/life-100.js'
-import foodMemories from '../../data/checklists/food-memories.js'
-import travelStories from '../../data/checklists/travel-stories.js'
-import workGrowth from '../../data/checklists/work-growth.js'
-import artLife from '../../data/checklists/art-life.js'
-import dailyTexture from '../../data/checklists/daily-texture.js'
-import smallHappiness from '../../data/checklists/small-happiness.js'
-import movies from '../../data/checklists/movies.js'
+// 从索引文件自动加载所有清单主题
+import themesModule from '../../data/checklists/index.js'
+
+const themes = themesModule.default || themesModule
+
+console.log('自动加载的清单主题数量:', Object.keys(themes).length)
+console.log('清单主题列表:', Object.keys(themes).map(id => themes[id].name))
 
 // 导入样式组件
 import AvatarWarmStyle from '../../styles/avatar-warm-style.vue'
 import SimpleStyle from '../../styles/simple-style.vue'
 import FormalStyle from '../../styles/formal-style.vue'
 import VintageStyle from '../../styles/vintage-style.vue'
-import TagsStyle from '../../styles/tags-style.vue'
+import TagsStyle from '../../styles/tags-style1.vue'
+import TagsStyle2 from '../../styles/tags-style2.vue'
+import NormalStyle from '../../styles/normal-style.vue'
+import CrazyStyle from '../../styles/crazy-style.vue'
 
-const themes = {
-  'small-thing': smallThing,
-  'life-100': life100,
-  'food-memories': foodMemories,
-  'travel-stories': travelStories,
-  'work-growth': workGrowth,
-  'art-life': artLife,
-  'daily-texture': dailyTexture,
-  'small-happiness': smallHappiness,
-  'movies': movies
-}
+// themes 对象已通过 require.context 自动加载（见上方）
 
 const styleComponents = {
   'avatar-warm': AvatarWarmStyle,
   'simple': SimpleStyle,
+  'normal': NormalStyle,
   'formal': FormalStyle,
   'vintage': VintageStyle,
-  'tags': TagsStyle
+  'tags': TagsStyle,
+  'tags2': TagsStyle2,
+  'crazy': CrazyStyle
 }
 
-const availableStyles = ref([
+// 所有可用的样式定义
+const allStyles = [
   { id: 'avatar-warm', name: '头像温暖', bgColor: '#f5f1e8' },
   { id: 'simple', name: '简约清新', bgColor: '#f8f9fa' },
+  { id: 'normal', name: '标准样式', bgColor: '#f8f9fa' },
   { id: 'formal', name: '正式简洁', bgColor: '#f5f1e8' },
   { id: 'vintage', name: '复古温馨', bgColor: '#f9f3e8' },
-  { id: 'tags', name: '标签云', bgColor: '#e6f7ff' }
-])
+  { id: 'tags', name: '标签云', bgColor: '#e6f7ff' },
+  { id: 'tags2', name: '标签云2', bgColor: '#ffffff' },
+  { id: 'crazy', name: '沙雕精神病', bgColor: '#ffeef8' }
+]
+
+// 当前主题可用的样式（根据主题配置动态计算）
+const availableStyles = computed(() => {
+  if (!currentTheme.value || !currentTheme.value.availableStyles) {
+    // 如果主题没有定义 availableStyles，使用所有样式
+    return allStyles
+  }
+  
+  // 根据主题的 availableStyles 过滤
+  const themeStyleIds = currentTheme.value.availableStyles
+  return allStyles.filter(style => themeStyleIds.includes(style.id))
+})
 
 const currentThemeId = ref('')
 const currentStyleId = ref('')
@@ -143,6 +173,16 @@ onLoad((options) => {
       text,
       checked: false
     }))
+    
+    // 获取当前主题可用的样式 ID 列表
+    const themeAvailableStyleIds = currentTheme.value.availableStyles 
+      ? currentTheme.value.availableStyles 
+      : allStyles.map(s => s.id)
+    
+    // 如果传入的 styleId 不在可用样式中，使用 defaultStyle 或第一个可用样式
+    if (!themeAvailableStyleIds.includes(currentStyleId.value)) {
+      currentStyleId.value = currentTheme.value.defaultStyle || themeAvailableStyleIds[0] || 'simple'
+    }
   }
 })
 

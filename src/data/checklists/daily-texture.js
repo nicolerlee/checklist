@@ -5,6 +5,7 @@ export default {
   emoji: '🧵',
   description: '日常生活的真实质感',
   defaultStyle: 'formal',  // 推荐：正式简洁风格
+  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
   items: [
     '养死过一盆很好养的植物（比如绿萝）',
     '成功组装过一个需要看说明书的家具（比如宜家）',

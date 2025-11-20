@@ -5,6 +5,7 @@ export default {
   emoji: '✨',
   description: '记录人生中的重要时刻和成就',
   defaultStyle: 'avatar-warm',  // 推荐：头像温暖风格
+  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
   quote: '原来，我已经成为了自己想成为的大人。',
   items: [
     '第一次一个人旅行',

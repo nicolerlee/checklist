@@ -33,33 +33,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import ThemeCard from '../../components/theme-card/theme-card.vue'
 
-// 导入清单主题
+// 从索引文件自动加载所有清单主题
+import { themesArray } from '../../data/checklists/index.js'
 
-import life100 from '../../data/checklists/life-100.js'
-import smallHappiness from '../../data/checklists/small-happiness.js'
-import smallThing from '../../data/checklists/small-thing.js'
-import foodMemories from '../../data/checklists/food-memories.js'
-import travelStories from '../../data/checklists/travel-stories.js'
-import workGrowth from '../../data/checklists/work-growth.js'
-import artLife from '../../data/checklists/art-life.js'
-import dailyTexture from '../../data/checklists/daily-texture.js'
-import movies from '../../data/checklists/movies.js'
+const themes = ref(themesArray)
 
-const themes = ref([
- 
-  life100,
-  smallHappiness,
-  smallThing,
-  foodMemories,
-  travelStories,
-  workGrowth,
-  artLife,
-  dailyTexture,
-  movies
-])
+console.log('自动加载的清单主题数量:', themes.value.length)
+console.log('清单主题列表:', themes.value.map(t => t.name))
 
 const selectTheme = (theme) => {
   uni.navigateTo({

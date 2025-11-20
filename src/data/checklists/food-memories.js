@@ -5,6 +5,7 @@ export default {
   emoji: '🍜',
   description: '美食相关的温暖回忆',
   defaultStyle: 'vintage',  // 推荐：复古温馨风格
+  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal'],
   items: [
     '在冬天的街头，哈着白气吃完一根烤红薯',
     '为心爱的人精心准备过一顿三菜一汤的晚餐',
