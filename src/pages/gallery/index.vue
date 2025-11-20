@@ -10,42 +10,73 @@
       </view>
     </view>
 
-    <!-- 作品列表 - 单列大卡片布局 -->
+    <!-- 作品列表 - 瀑布流布局 -->
     <scroll-view class="gallery-list" scroll-y>
-      <view class="list-container">
-        <view
-          v-for="(item, index) in galleryItems"
-          :key="item.id"
-          class="gallery-card"
-          :style="{ animationDelay: index * 0.06 + 's' }"
-          @click="selectGallery(item)"
-        >
-          <!-- 预览图片 -->
-          <view class="card-image-wrapper">
-            <image
-              class="card-image"
-              :src="item.previewImage"
-              mode="aspectFit"
-              :lazy-load="false"
-              @error="handleImageError($event, item)"
-            />
-            <view class="image-gradient"></view>
-            <view class="image-overlay">
-              <text class="overlay-emoji">{{ item.emoji }}</text>
-            </view>
-          </view>
-
-          <!-- 卡片内容 -->
-          <view class="card-content">
-            <view class="card-header">
-              <text class="card-title">{{ item.title }}</text>
-              <view class="card-emoji-small">
-                <text class="emoji-small">{{ item.emoji }}</text>
+      <view class="waterfall-container">
+        <view class="waterfall-column">
+          <view
+            v-for="(item, index) in leftColumnItems"
+            :key="item.id"
+            class="gallery-card"
+            :class="'card-height-' + (index % 3)"
+            :style="{ animationDelay: index * 0.1 + 's' }"
+            @click="selectGallery(item)"
+          >
+            <!-- 预览图片 -->
+            <view class="card-image-wrapper">
+              <image
+                class="card-image"
+                :src="item.previewImage"
+                mode="aspectFill"
+                :lazy-load="false"
+                @error="handleImageError($event, item)"
+              />
+              <view class="image-overlay">
+                <text class="overlay-emoji">{{ item.emoji }}</text>
               </view>
             </view>
-            <text class="card-desc">{{ item.description }}</text>
-            <view class="card-footer">
-              <text class="card-action">制作同款 →</text>
+
+            <!-- 卡片内容 -->
+            <view class="card-content">
+              <view class="card-title-row">
+                <text class="card-title">{{ item.title }}</text>
+                <text class="card-separator">·</text>
+                <text class="card-desc">{{ item.description }}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        
+        <view class="waterfall-column">
+          <view
+            v-for="(item, index) in rightColumnItems"
+            :key="item.id"
+            class="gallery-card"
+            :class="'card-height-' + ((index + 1) % 3)"
+            :style="{ animationDelay: (index + 0.5) * 0.1 + 's' }"
+            @click="selectGallery(item)"
+          >
+            <!-- 预览图片 -->
+            <view class="card-image-wrapper">
+              <image
+                class="card-image"
+                :src="item.previewImage"
+                mode="aspectFill"
+                :lazy-load="false"
+                @error="handleImageError($event, item)"
+              />
+              <view class="image-overlay">
+                <text class="overlay-emoji">{{ item.emoji }}</text>
+              </view>
+            </view>
+
+            <!-- 卡片内容 -->
+            <view class="card-content">
+              <view class="card-title-row">
+                <text class="card-title">{{ item.title }}</text>
+                <text class="card-separator">·</text>
+                <text class="card-desc">{{ item.description }}</text>
+              </view>
             </view>
           </view>
         </view>
@@ -55,7 +86,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { getAllGallery } from '../../data/gallery.js'
 
 const galleryItems = ref([])
@@ -64,6 +95,15 @@ onMounted(() => {
   // 加载所有作品（也可以只加载精选作品）
   galleryItems.value = getAllGallery()
   console.log('作品集加载完成，共', galleryItems.value.length, '个作品')
+})
+
+// 瀑布流：将作品分配到左右两列
+const leftColumnItems = computed(() => {
+  return galleryItems.value.filter((_, index) => index % 2 === 0)
+})
+
+const rightColumnItems = computed(() => {
+  return galleryItems.value.filter((_, index) => index % 2 === 1)
 })
 
 const selectGallery = (item) => {
@@ -134,7 +174,7 @@ const handleImageError = (e, item) => {
 }
 
 
-/* 作品列表 - 单列大卡片布局 */
+/* 作品列表 - 瀑布流布局 */
 .gallery-list {
   flex: 1;
   height: calc(100vh - 180rpx);
@@ -143,68 +183,70 @@ const handleImageError = (e, item) => {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-.list-container {
+.waterfall-container {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 30rpx 40rpx;
+  align-items: flex-start;
+}
+
+.waterfall-column {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 32rpx;
-  padding: 0 30rpx 40rpx;
+  gap: 20rpx;
 }
 
-/* 作品卡片 - 大卡片横向布局 */
+/* 作品卡片 - 瀑布流垂直布局 */
 .gallery-card {
   background: #ffffff;
-  border-radius: 28rpx;
+  border-radius: 24rpx;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: slideInLeft 0.6s ease-out both;
-  border: 1rpx solid rgba(212, 165, 116, 0.1);
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out both;
+  border: 1rpx solid rgba(212, 165, 116, 0.12);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
-  min-height: 380rpx;
-  padding: 20rpx;
-  position: relative;
-  align-items: stretch;
 }
 
-@keyframes slideInLeft {
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateX(-40rpx);
+    transform: translateY(30rpx);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
 .gallery-card:active {
-  transform: translateX(4rpx) scale(0.99);
-  box-shadow: 0 12rpx 40rpx rgba(212, 165, 116, 0.18);
-  border-color: rgba(212, 165, 116, 0.25);
+  transform: translateY(-4rpx) scale(0.98);
+  box-shadow: 0 12rpx 32rpx rgba(212, 165, 116, 0.2);
+  border-color: rgba(212, 165, 116, 0.35);
 }
 
-/* 预览图片区域 - 横向布局左侧 */
+/* 预览图片区域 - 瀑布流不同高度 */
 .card-image-wrapper {
   position: relative;
-  width: 260rpx;
-  min-width: 260rpx;
-  height: 380rpx;
+  width: 100%;
   overflow: hidden;
   background: linear-gradient(135deg, #f5f1e8 0%, #e8e0d0 100%);
-  flex-shrink: 0;
-  align-self: center;
 }
 
-.image-gradient {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120rpx;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
-  z-index: 1;
+/* 不同卡片高度的图片区域 */
+.card-height-0 .card-image-wrapper {
+  height: 420rpx;
+}
+
+.card-height-1 .card-image-wrapper {
+  height: 500rpx;
+}
+
+.card-height-2 .card-image-wrapper {
+  height: 460rpx;
 }
 
 .card-image {
@@ -216,99 +258,71 @@ const handleImageError = (e, item) => {
 
 .image-overlay {
   position: absolute;
-  top: 12rpx;
-  right: 12rpx;
-  width: 64rpx;
-  height: 64rpx;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 18rpx;
+  bottom: 20rpx;
+  left: 20rpx;
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20rpx;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(12rpx);
-  border: 1rpx solid rgba(255, 255, 255, 0.9);
+  border: 1rpx solid rgba(255, 255, 255, 0.8);
   z-index: 2;
 }
 
 .overlay-emoji {
-  font-size: 32rpx;
+  font-size: 36rpx;
   line-height: 1;
 }
 
-/* 卡片内容 - 右侧信息区域 */
+/* 卡片内容 */
 .card-content {
-  flex: 1;
-  padding: 32rpx 28rpx 28rpx;
+  padding: 24rpx 20rpx 20rpx;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-width: 0;
+  flex: 1;
 }
 
-.card-header {
+.card-title-row {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16rpx;
-  margin-bottom: 16rpx;
+  align-items: center;
+  gap: 10rpx;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 .card-title {
-  font-size: 36rpx;
+  font-size: 30rpx;
   font-weight: 800;
   color: #111827;
-  letter-spacing: -0.5rpx;
-  line-height: 1.3;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card-emoji-small {
-  width: 56rpx;
-  height: 56rpx;
-  background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(201, 160, 104, 0.15) 100%);
-  border-radius: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  letter-spacing: -0.4rpx;
+  line-height: 1.4;
   flex-shrink: 0;
 }
 
-.emoji-small {
-  font-size: 32rpx;
-  line-height: 1;
+.card-separator {
+  font-size: 22rpx;
+  color: #d1d5db;
+  font-weight: 400;
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 .card-desc {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #6b7280;
-  line-height: 1.6;
+  line-height: 1.5;
   font-weight: 400;
-  margin-bottom: 24rpx;
+  flex: 1;
+  min-width: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1;
-}
-
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.card-action {
-  font-size: 26rpx;
-  color: #d4a574;
-  font-weight: 600;
-  letter-spacing: 0.5rpx;
 }
 </style>
 
