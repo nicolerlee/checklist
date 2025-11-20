@@ -162,7 +162,7 @@ const handleImageError = (e, item) => {
   display: flex;
   flex-direction: row;
   width: 100%;
-  min-height: 240rpx;
+  min-height: 380rpx;
   padding: 20rpx;
   position: relative;
   align-items: stretch;
@@ -188,9 +188,9 @@ const handleImageError = (e, item) => {
 /* 预览图片区域 - 横向布局左侧 */
 .card-image-wrapper {
   position: relative;
-  width: 180rpx;
-  min-width: 180rpx;
-  height: 240rpx;
+  width: 260rpx;
+  min-width: 260rpx;
+  height: 380rpx;
   overflow: hidden;
   background: linear-gradient(135deg, #f5f1e8 0%, #e8e0d0 100%);
   flex-shrink: 0;
