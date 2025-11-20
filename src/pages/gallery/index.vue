@@ -5,7 +5,6 @@
       <view class="header-content">
         <view class="title-row">
           <text class="title">推荐</text>
-          <view class="title-accent"></view>
         </view>
       </view>
     </view>
@@ -40,8 +39,7 @@
             <view class="card-content">
               <view class="card-title-row">
                 <text class="card-title">{{ item.title }}</text>
-                <text class="card-separator">·</text>
-                <text class="card-desc">{{ item.description }}</text>
+                <text class="card-action-text">做同款</text>
               </view>
             </view>
           </view>
@@ -74,8 +72,7 @@
             <view class="card-content">
               <view class="card-title-row">
                 <text class="card-title">{{ item.title }}</text>
-                <text class="card-separator">·</text>
-                <text class="card-desc">{{ item.description }}</text>
+                <text class="card-action-text">做同款</text>
               </view>
             </view>
           </view>
@@ -253,6 +250,7 @@ const handleImageError = (e, item) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
   display: block;
 }
 
@@ -289,33 +287,16 @@ const handleImageError = (e, item) => {
 .card-title-row {
   display: flex;
   align-items: center;
-  gap: 10rpx;
-  flex-wrap: nowrap;
-  overflow: hidden;
+  justify-content: space-between;
+  gap: 12rpx;
 }
 
 .card-title {
-  font-size: 30rpx;
-  font-weight: 800;
-  color: #111827;
-  letter-spacing: -0.4rpx;
-  line-height: 1.4;
-  flex-shrink: 0;
-}
-
-.card-separator {
-  font-size: 22rpx;
-  color: #d1d5db;
-  font-weight: 400;
-  flex-shrink: 0;
-  opacity: 0.6;
-}
-
-.card-desc {
   font-size: 26rpx;
-  color: #6b7280;
-  line-height: 1.5;
-  font-weight: 400;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.3rpx;
+  line-height: 1.4;
   flex: 1;
   min-width: 0;
   display: -webkit-box;
@@ -323,6 +304,23 @@ const handleImageError = (e, item) => {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.card-action-text {
+  font-size: 22rpx;
+  color: #d4a574;
+  font-weight: 500;
+  letter-spacing: 0.3rpx;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.card-action-text::after {
+  content: '→';
+  margin-left: 4rpx;
+  font-size: 18rpx;
+  color: #d4a574;
+  transition: transform 0.3s ease;
 }
 </style>
 
