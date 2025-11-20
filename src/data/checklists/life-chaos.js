@@ -5,7 +5,7 @@ export default {
   emoji: '🤯',
   description: '那些让你怀疑自己智商的时刻',
   defaultStyle: 'crazy',
-  availableStyles: ['crazy', 'tags', 'tags2'],
+  availableStyles: ['crazy', 'crazy-bright', 'tags', 'tags2'],
   quote: '我可能是生活派来考验自己的。',
   items: [
     '出门忘带钥匙',

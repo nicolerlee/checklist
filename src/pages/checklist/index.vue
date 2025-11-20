@@ -50,6 +50,13 @@
       :theme="currentTheme"
       @toggle="toggleItem"
     />
+    <crazy-bright-style 
+      v-else-if="currentStyleId === 'crazy-bright'"
+      ref="currentStyleRef"
+      :items="items"
+      :theme="currentTheme"
+      @toggle="toggleItem"
+    />
     <normal-style 
       v-else-if="currentStyleId === 'normal'"
       ref="currentStyleRef"
@@ -118,6 +125,7 @@ import TagsStyle from '../../styles/tags-style1.vue'
 import TagsStyle2 from '../../styles/tags-style2.vue'
 import NormalStyle from '../../styles/normal-style.vue'
 import CrazyStyle from '../../styles/crazy-style.vue'
+import CrazyBrightStyle from '../../styles/crazy-bright-style.vue'
 
 // themes 对象已通过 require.context 自动加载（见上方）
 
@@ -129,7 +137,8 @@ const styleComponents = {
   'vintage': VintageStyle,
   'tags': TagsStyle,
   'tags2': TagsStyle2,
-  'crazy': CrazyStyle
+  'crazy': CrazyStyle,
+  'crazy-bright': CrazyBrightStyle
 }
 
 // 所有可用的样式定义
@@ -141,7 +150,8 @@ const allStyles = [
   { id: 'vintage', name: '复古温馨', bgColor: '#f9f3e8' },
   { id: 'tags', name: '标签云', bgColor: '#e6f7ff' },
   { id: 'tags2', name: '标签云2', bgColor: '#ffffff' },
-  { id: 'crazy', name: '不规则', bgColor: '#ffeef8' }
+  { id: 'crazy', name: '不规则', bgColor: '#ffeef8' },
+  { id: 'crazy-bright', name: '不规则-亮色', bgColor: '#ffeef8' }
 ]
 
 // 当前主题可用的样式（根据主题配置动态计算）

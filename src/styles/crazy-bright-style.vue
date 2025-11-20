@@ -48,7 +48,7 @@ const props = defineProps({
 
 const emit = defineEmits(['toggle'])
 
-// 霓虹彩虹色系（原始亮色，用于生图）
+// 霓虹彩虹色系（亮色版本，用于预览和生图）
 const rainbowColors = [
   '#ff0080', // 荧光粉
   '#00ff88', // 荧光绿
@@ -64,22 +64,6 @@ const rainbowColors = [
   '#ffff40'  // 亮黄
 ]
 
-// 调弱版本的彩虹色系（用于预览，降低饱和度）
-const softRainbowColors = [
-  '#ff6ba8', // 柔和粉
-  '#66ffb3', // 柔和绿
-  '#66b3ff', // 柔和蓝
-  '#ffb366', // 柔和橙
-  '#b366ff', // 柔和紫
-  '#ffeb66', // 柔和黄
-  '#ff8fb8', // 柔和粉红
-  '#80ffb8', // 柔和青绿
-  '#80b8ff', // 柔和天蓝
-  '#ffb880', // 柔和橙红
-  '#b880ff', // 柔和紫蓝
-  '#ffeb80'  // 柔和亮黄
-]
-
 const checkedCount = computed(() => {
   return props.items.filter(item => item.checked).length
 })
@@ -88,9 +72,9 @@ const toggleItem = (index) => {
   emit('toggle', index)
 }
 
-// 获取渐变背景色（基于索引循环，预览时使用调弱版本）
+// 获取渐变背景色（基于索引循环，预览时使用亮色）
 const getGradientColor = (index) => {
-  return softRainbowColors[index % softRainbowColors.length]
+  return rainbowColors[index % rainbowColors.length]
 }
 
 // 获取边框颜色（稍微深一点）
@@ -102,9 +86,9 @@ const getBorderColor = (index) => {
 
 // 获取文字颜色（根据背景色判断，黄色、绿色等浅色用深色文字）
 const getTextColor = (index) => {
-  const bgColor = softRainbowColors[index % softRainbowColors.length] // 预览时使用调弱版本
+  const bgColor = rainbowColors[index % rainbowColors.length] // 预览时使用亮色版本
   // 浅色背景使用深色文字：黄色系、绿色系
-  const lightColors = ['#ffeb66', '#ffeb80', '#66ffb3', '#80ffb8'] // 对应调弱版本的浅色
+  const lightColors = ['#ffff00', '#ffff40', '#00ff88', '#40ff88'] // 对应亮色版本的浅色
   if (lightColors.includes(bgColor)) {
     return '#333333' // 深灰色文字
   }
@@ -160,7 +144,7 @@ const drawCanvas = (ctx, canvas, config) => {
   ctx.restore()
   y += 100
   
-  // 标签云 - 沙雕风格绘制
+  // 标签云 - 沙雕风格绘制（使用渐变）
   ctx.font = '22px sans-serif'
   ctx.textAlign = 'left'
   ctx.textBaseline = 'middle'
@@ -193,17 +177,23 @@ const drawCanvas = (ctx, canvas, config) => {
     ctx.rotate(rotation)
     
     if (item.checked) {
-      // 已勾选：纯色背景（不使用渐变，使用调弱版本的颜色）
-      const bgColor = softRainbowColors[index % softRainbowColors.length]
-      ctx.fillStyle = bgColor
-      // 绘制圆角矩形（无边框，纯色背景）
+      // 已勾选：彩虹渐变背景（使用渐变）
+      const gradient = ctx.createLinearGradient(-tagWidth/2, -tagHeight/2, tagWidth/2, tagHeight/2)
+      const color1 = rainbowColors[index % rainbowColors.length]
+      const color2 = rainbowColors[(index + 1) % rainbowColors.length]
+      gradient.addColorStop(0, color1)
+      gradient.addColorStop(1, color2)
+      
+      ctx.fillStyle = gradient
+      // 绘制圆角矩形（无边框，渐变背景）
       drawRoundedRect(ctx, -tagWidth/2, -tagHeight/2, tagWidth, tagHeight, 12)
       ctx.fill()
       
       // 无边框设计，靠颜色和阴影突出效果
       
       // 根据背景色判断文字颜色（黄色、绿色等浅色用深色文字）
-      const lightColors = ['#ffeb66', '#ffeb80', '#66ffb3', '#80ffb8'] // 对应调弱版本的浅色
+      const bgColor = rainbowColors[index % rainbowColors.length]
+      const lightColors = ['#ffff00', '#ffff40', '#00ff88', '#40ff88'] // 对应亮色版本的浅色
       if (lightColors.includes(bgColor)) {
         ctx.fillStyle = '#333333' // 深灰色文字
       } else {
@@ -379,3 +369,4 @@ defineExpose({
 }
 
 </style>
+
