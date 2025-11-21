@@ -23,12 +23,24 @@ import socialDeath from './social-death.js'
 import techBetrayal from './tech-betrayal.js'
 import travelStories from './travel-stories.js'
 import workGrowth from './work-growth.js'
+import xiaohongshuLife100 from './xiaohongshu-life-100.js'
+import xiaohongshuSelfDiscipline from './xiaohongshu-self-discipline.js'
+import xiaohongshuTravel from './xiaohongshu-travel.js'
+import xiaohongshuStudy from './xiaohongshu-study.js'
+import xiaohongshuLove from './xiaohongshu-love.js'
+import xiaohongshuSelfCare from './xiaohongshu-self-care.js'
 
 // 所有清单主题列表
 const allThemes = [
   life100,
   my101Flaws,
   lifeChaos,
+  xiaohongshuLife100,
+  xiaohongshuSelfDiscipline,
+  xiaohongshuTravel,
+  xiaohongshuStudy,
+  xiaohongshuLove,
+  xiaohongshuSelfCare,
   smallHappiness,
   smallThing,
   artLife,
