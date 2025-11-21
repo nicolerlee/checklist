@@ -4,9 +4,9 @@ export default {
   name: '人生中的100个愿望',
   emoji: '🌟',
   description: '记录生活中的美好瞬间',
-  defaultStyle: 'handwritten',  // 推荐：手写风格
+  defaultStyle: 'pink-simple',  // 推荐：手写风格
   // 可用的样式列表（可选，如果不定义则使用所有样式）
-  availableStyles: ['handwritten', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['pink-simple', 'handwritten', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     '跑马拉松',
     '跳伞',

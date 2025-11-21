@@ -71,6 +71,13 @@
       :theme="currentTheme"
       @toggle="toggleItem"
     />
+    <pink-simple-style 
+      v-else-if="currentStyleId === 'pink-simple'"
+      ref="currentStyleRef"
+      :items="items"
+      :theme="currentTheme"
+      @toggle="toggleItem"
+    />
 
     <!-- 底部操作栏（公共） -->
     <view class="action-bar" :class="{ hidden: isToolbarHidden }">
@@ -115,7 +122,7 @@
       type="2d"
       id="checklist-canvas"
       class="canvas"
-      :style="{ width: '750px', height: currentStyleId === 'handwritten' ? '1400px' : '1200px' }"
+      :style="{ width: '750px', height: currentStyleId === 'handwritten' ? '1300px' : (currentStyleId === 'pink-simple' ? '1800px' : '1200px') }"
     ></canvas>
   </view>
 </template>
@@ -143,6 +150,7 @@ import NormalStyle from '../../styles/normal-style.vue'
 import CrazyStyle from '../../styles/crazy-style.vue'
 import CrazyBrightStyle from '../../styles/crazy-bright-style.vue'
 import HandwrittenStyle from '../../styles/handwritten-style.vue'
+import PinkSimpleStyle from '../../styles/pink-simple-style.vue'
 
 // themes 对象已通过 require.context 自动加载（见上方）
 
@@ -156,7 +164,8 @@ const styleComponents = {
   'tags2': TagsStyle2,
   'crazy': CrazyStyle,
   'crazy-bright': CrazyBrightStyle,
-  'handwritten': HandwrittenStyle
+  'handwritten': HandwrittenStyle,
+  'pink-simple': PinkSimpleStyle
 }
 
 // 所有可用的样式定义
@@ -170,7 +179,8 @@ const allStyles = [
   { id: 'tags2', name: '标签云2', bgColor: '#ffffff' },
   { id: 'crazy', name: '不规则', bgColor: '#ffeef8' },
   { id: 'crazy-bright', name: '不规则-亮色', bgColor: '#ffeef8' },
-  { id: 'handwritten', name: '手写风格', bgColor: '#ffffff' }
+  { id: 'handwritten', name: '手写风格', bgColor: '#ffffff' },
+  { id: 'pink-simple', name: '粉色简约', bgColor: '#f5f0e8' }
 ]
 
 // 当前主题可用的样式（根据主题配置动态计算）
@@ -414,7 +424,9 @@ const generateImage = async () => {
         ctx.scale(dpr, dpr)
 
         // 调用当前样式组件的绘制方法
-        const canvasHeight = currentStyleId.value === 'handwritten' ? 1400 : 1200
+        let canvasHeight = 1200
+        if (currentStyleId.value === 'handwritten') canvasHeight = 1300
+        if (currentStyleId.value === 'pink-simple') canvasHeight = 1800
         if (currentStyleRef.value && typeof currentStyleRef.value.drawCanvas === 'function') {
           await currentStyleRef.value.drawCanvas(ctx, canvas, { width: 750, height: canvasHeight })
         } else {

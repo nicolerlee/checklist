@@ -296,7 +296,7 @@ const drawCanvas = (ctx, canvas, config) => {
   ctx.strokeStyle = '#d0d0d0'
   ctx.lineWidth = 1.5
   const contentStartY = y - 20
-  const contentEndY = y + maxColumnHeight + 60  // 增加底部空间，避免与文字交叠
+  const contentEndY = y + maxColumnHeight + 30  // 减少底部空间
   ctx.strokeRect(padding, contentStartY, totalWidth, contentEndY - contentStartY)
   
   // 绘制列之间的分割线（在所有内容绘制完成后）
@@ -336,7 +336,7 @@ defineExpose({
 
 <style scoped>
 .container {
-  min-height: 100vh;
+  min-height: auto;
   background-color: #ffffff;
   padding: 20rpx;
   border: 1.5rpx solid #d0d0d0;
