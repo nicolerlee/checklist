@@ -4,9 +4,9 @@ export default {
   id: 'xiaohongshu-self-care',
   name: '爱自己的100种方式',
   emoji: '🌸',
-  description: '学会爱自己，来自小红书自我关怀清单',
+  description: '学会爱自己，你值得拥有一切美好',
   defaultStyle: 'three-columns',
-  availableStyles: ["three-columns", "tags", "tags2", "crazy", "crazy-bright"],
+  availableStyles: ["three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "给自己买一束花",
     "给自己做一顿美食",

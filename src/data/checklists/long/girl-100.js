@@ -6,7 +6,7 @@ export default {
   emoji: '🌟',
   description: '普女也能逆风翻盘',
   defaultStyle: 'simple',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal', 'tags', 'tags2'],
+  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal', 'tags', 'tags2','crazy', 'crazy-bright', 'three-columns', 'two-columns'],
   items: [
     "完成5公里跑步",
     "学会游泳/自由泳",

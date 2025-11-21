@@ -6,7 +6,7 @@ export default {
   emoji: '🎯',
   description: '记录人生中的第一次体验',
   defaultStyle: 'three-columns',
-  availableStyles: ['three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "第一次一个人/和朋友出国自由行",
     "第一次亲眼看到极光",

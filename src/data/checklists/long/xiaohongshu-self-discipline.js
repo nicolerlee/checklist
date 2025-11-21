@@ -4,9 +4,9 @@ export default {
   id: 'xiaohongshu-self-discipline',
   name: '自律女孩的100个习惯',
   emoji: '💪',
-  description: '成为更好的自己，来自小红书热门自律清单',
+  description: '成为更好的自己，勇敢做自己',
   defaultStyle: 'three-columns',
-  availableStyles: ["three-columns", "tags", "tags2", "crazy", "crazy-bright"],
+  availableStyles: ["three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "早起不赖床",
     "每天喝8杯水",

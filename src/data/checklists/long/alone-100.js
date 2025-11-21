@@ -6,7 +6,7 @@ export default {
   emoji: '💯',
   description: '100件独处可以做的小事',
   defaultStyle: 'crazy',
-  availableStyles: ['three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "清理手机内存",
     "备份重要的照片、文件",

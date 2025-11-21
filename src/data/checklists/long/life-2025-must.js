@@ -6,7 +6,7 @@ export default {
   emoji: '🌟',
   description: '必做100件事',
   defaultStyle: 'three-columns',
-  availableStyles: ['three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "去爬一次山",
     "去看海",

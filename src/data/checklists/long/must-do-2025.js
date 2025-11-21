@@ -6,7 +6,7 @@ export default {
   emoji: '🌟',
   description: '2025我必做的100件事情',
   defaultStyle: 'three-columns',
-  availableStyles: ['three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "看50部豆瓣高分电影",
     "读8本许墨清单的书并且深刻领会其中道理",

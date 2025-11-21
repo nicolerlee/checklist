@@ -6,7 +6,7 @@ export default {
   emoji: '🌟',
   description: '2025倒数100天の100件小事',
   defaultStyle: 'three-columns',
-  availableStyles: ['three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "看电影《遗愿清单》",
     "看电影《时间旅行者的妻子》",

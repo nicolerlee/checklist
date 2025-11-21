@@ -6,7 +6,7 @@ export default {
   emoji: '💯',
   description: '100件不玩手机的小事',
   defaultStyle: 'three-columns',
-  availableStyles: ['three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "做瑜伽、普拉提、拉伸",
     "在家跟练健身视频",

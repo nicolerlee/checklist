@@ -6,7 +6,7 @@ export default {
   emoji: '🌟',
   description: '人生体验清单',
   defaultStyle: 'three-columns',
-  availableStyles: ['three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "说走就走的旅行",
     "天安门看升国旗",
