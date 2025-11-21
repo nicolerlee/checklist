@@ -9,6 +9,15 @@ import my101Flaws from './long/my-101-flaws.js'
 import xiaohongshuLife100 from './long/xiaohongshu-life-100.js'
 import xiaohongshuSelfDiscipline from './long/xiaohongshu-self-discipline.js'
 import xiaohongshuSelfCare from './long/xiaohongshu-self-care.js'
+import alone100 from './long/alone-100.js'
+import completed from './long/life-dream-completed.js'
+import first80 from './long/first-80.js'
+import growth100days from './long/growth-100days.js'
+import happiness100 from './long/happiness-100.js'
+import life2025must from './long/life-2025-must.js'
+import lifeexperience from './long/life-experience.js'
+import mustdo2025 from './long/must-do-2025.js'
+import noscreen100 from './long/no-phone-100.js'
 
 // 从 short 文件夹导入
 import artLife from './short/art-life.js'
@@ -32,13 +41,32 @@ import workGrowth from './short/work-growth.js'
 import xiaohongshuTravel from './short/xiaohongshu-travel.js'
 import xiaohongshuStudy from './short/xiaohongshu-study.js'
 import xiaohongshuLove from './short/xiaohongshu-love.js'
+import cultivate2025 from './short/cultivate-2025.js'
+import girl100 from './short/girl-100.js'
+import introvert from './short/i-people.js'
+import my100 from './short/my-100.js'
+import self108 from './short/self-108.js'
 
 // 所有清单主题列表
 const allThemes = [
   life100,
   my101Flaws,
-  lifeChaos,
+  alone100,
+  completed,
+  first80,
+  growth100days,
+  happiness100,
+  life2025must,
+  lifeexperience,
+  mustdo2025,
+  noscreen100,
+  cultivate2025,
+  girl100,
+  introvert,
+  my100,
+  self108,
   xiaohongshuLife100,
+  lifeChaos,
   xiaohongshuSelfDiscipline,
   xiaohongshuTravel,
   xiaohongshuStudy,
@@ -60,7 +88,7 @@ const allThemes = [
   socialDeath,
   techBetrayal,
   travelStories,
-  workGrowth
+  workGrowth,
 ]
 
 // 转换为对象（key 为 theme.id）

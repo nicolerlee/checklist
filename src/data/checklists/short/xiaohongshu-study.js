@@ -5,7 +5,7 @@ export default {
   name: '学霸逆袭清单',
   emoji: '📚',
   description: '高效学习方法，来自小红书学霸分享',
-  defaultStyle: 'tags',
+  defaultStyle: 'crazy',
   availableStyles: ["tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "制定学习计划",

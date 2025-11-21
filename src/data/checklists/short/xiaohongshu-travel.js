@@ -5,7 +5,7 @@ export default {
   name: '旅行必做清单',
   emoji: '✈️',
   description: '让每次旅行都充满意义，来自小红书旅行达人',
-  defaultStyle: 'tags',
+  defaultStyle: 'crazy',
   availableStyles: ["tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "拍一张标志性建筑照片",
