@@ -296,7 +296,7 @@ const drawCanvas = (ctx, canvas, config) => {
   ctx.strokeStyle = '#d0d0d0'
   ctx.lineWidth = 1.5
   const contentStartY = y - 20
-  const contentEndY = y + maxColumnHeight + 30  // 减少底部空间
+  const contentEndY = y + maxColumnHeight + 80  // 增加底部空白
   ctx.strokeRect(padding, contentStartY, totalWidth, contentEndY - contentStartY)
   
   // 绘制列之间的分割线（在所有内容绘制完成后）

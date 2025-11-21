@@ -5,8 +5,8 @@ export default {
   name: '自律女孩的100个习惯',
   emoji: '💪',
   description: '成为更好的自己，来自小红书热门自律清单',
-  defaultStyle: 'handwritten',
-  availableStyles: ["handwritten", "tags", "tags2", "crazy", "crazy-bright"],
+  defaultStyle: 'three-columns',
+  availableStyles: ["three-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "早起不赖床",
     "每天喝8杯水",

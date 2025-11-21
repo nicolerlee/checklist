@@ -5,8 +5,8 @@ export default {
   name: '人生必做的100件小事',
   emoji: '🌟',
   description: '记录生活中的美好瞬间，来自小红书热门清单',
-  defaultStyle: 'handwritten',
-  availableStyles: ["handwritten", "tags", "tags2", "crazy", "crazy-bright"],
+  defaultStyle: 'three-columns',
+  availableStyles: ["three-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "看一次日出",
     "看一次日落",

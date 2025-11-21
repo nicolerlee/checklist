@@ -167,12 +167,15 @@ const drawCanvas = (ctx, canvas, config) => {
     columnData[columnIndex].push({ item, index })
   })
   
+  // 增加底部空白
+  const bottomPadding = 80
+  
   // 绘制两列内容
   columnData.forEach((columnItems, columnIndex) => {
     let currentY = y
     const columnX = columnIndex === 0 ? leftColumnX : rightColumnX
     
-    columnItems.forEach(({ item, index }) => {
+    columnItems.forEach(({ item, index }, itemIndex) => {
       // 方形复选框
       const checkboxSize = 16
       const checkboxX = columnX
@@ -200,7 +203,9 @@ const drawCanvas = (ctx, canvas, config) => {
       // 简单文字绘制（不换行）
       ctx.fillText(itemText, textX, currentY)
       
-      currentY += 28
+      // 在最后一项之后增加额外的底部间距
+      const itemSpacing = itemIndex === columnItems.length - 1 ? 28 + bottomPadding : 28
+      currentY += itemSpacing
     })
   })
 }

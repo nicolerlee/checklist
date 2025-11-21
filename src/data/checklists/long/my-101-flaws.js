@@ -6,7 +6,7 @@ export default {
   description: '诚实地面对自己，记录那些不完美',
   defaultStyle: 'tags2',
   // 可用的样式列表（可选，如果不定义则使用所有样式）
-  availableStyles: ['tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ["three-columns", "tags", "tags2", "crazy", "crazy-bright"],
   quote: '承认自己的缺点，是成长的开始。',
   items: [
     '胆小',

@@ -64,15 +64,15 @@
       :theme="currentTheme"
       @toggle="toggleItem"
     />
-    <handwritten-style 
-      v-else-if="currentStyleId === 'handwritten'"
+    <three-columns-style 
+      v-else-if="currentStyleId === 'three-columns'"
       ref="currentStyleRef"
       :items="items"
       :theme="currentTheme"
       @toggle="toggleItem"
     />
-    <pink-simple-style 
-      v-else-if="currentStyleId === 'pink-simple'"
+    <two-columns-style 
+      v-else-if="currentStyleId === 'two-columns'"
       ref="currentStyleRef"
       :items="items"
       :theme="currentTheme"
@@ -122,7 +122,7 @@
       type="2d"
       id="checklist-canvas"
       class="canvas"
-      :style="{ width: '750px', height: currentStyleId === 'handwritten' ? '1300px' : (currentStyleId === 'pink-simple' ? '1800px' : '1200px') }"
+      :style="{ width: '750px', height: currentStyleId === 'three-columns' ? '1300px' : (currentStyleId === 'two-columns' ? '1800px' : '1200px') }"
     ></canvas>
   </view>
 </template>
@@ -149,8 +149,8 @@ import TagsStyle2 from '../../styles/tags-style2.vue'
 import NormalStyle from '../../styles/normal-style.vue'
 import CrazyStyle from '../../styles/crazy-style.vue'
 import CrazyBrightStyle from '../../styles/crazy-bright-style.vue'
-import HandwrittenStyle from '../../styles/handwritten-style.vue'
-import PinkSimpleStyle from '../../styles/pink-simple-style.vue'
+import ThreeColumnsStyle from '../../styles/three-columns.vue'
+import TwoColumnsStyle from '../../styles/two-columns.vue'
 
 // themes 对象已通过 require.context 自动加载（见上方）
 
@@ -164,8 +164,8 @@ const styleComponents = {
   'tags2': TagsStyle2,
   'crazy': CrazyStyle,
   'crazy-bright': CrazyBrightStyle,
-  'handwritten': HandwrittenStyle,
-  'pink-simple': PinkSimpleStyle
+  'three-columns': ThreeColumnsStyle,
+  'two-columns': TwoColumnsStyle
 }
 
 // 所有可用的样式定义
@@ -179,8 +179,8 @@ const allStyles = [
   { id: 'tags2', name: '标签云2', bgColor: '#ffffff' },
   { id: 'crazy', name: '不规则', bgColor: '#ffeef8' },
   { id: 'crazy-bright', name: '不规则-亮色', bgColor: '#ffeef8' },
-  { id: 'handwritten', name: '手写风格', bgColor: '#ffffff' },
-  { id: 'pink-simple', name: '粉色简约', bgColor: '#f5f0e8' }
+  { id: 'three-columns', name: '三列布局', bgColor: '#ffffff' },
+  { id: 'two-columns', name: '两列布局', bgColor: '#f5f0e8' }
 ]
 
 // 当前主题可用的样式（根据主题配置动态计算）
@@ -425,8 +425,8 @@ const generateImage = async () => {
 
         // 调用当前样式组件的绘制方法
         let canvasHeight = 1200
-        if (currentStyleId.value === 'handwritten') canvasHeight = 1300
-        if (currentStyleId.value === 'pink-simple') canvasHeight = 1800
+        if (currentStyleId.value === 'three-columns') canvasHeight = 1300
+        if (currentStyleId.value === 'two-columns') canvasHeight = 1800
         if (currentStyleRef.value && typeof currentStyleRef.value.drawCanvas === 'function') {
           await currentStyleRef.value.drawCanvas(ctx, canvas, { width: 750, height: canvasHeight })
         } else {
