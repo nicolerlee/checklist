@@ -1,5 +1,5 @@
 <template>
-  <view v-if="currentTheme" class="page-container">
+  <view v-if="currentTheme" class="page-container" :class="{ 'toolbar-hidden': isToolbarHidden }" @tap="handleScreenTap">
     <!-- 条件渲染样式组件 -->
     <avatar-warm-style 
       v-if="currentStyleId === 'avatar-warm'"
@@ -66,7 +66,7 @@
     />
 
     <!-- 底部操作栏（公共） -->
-    <view class="action-bar">
+    <view class="action-bar" :class="{ hidden: isToolbarHidden }">
       <!-- 风格切换工具栏 -->
       <view class="style-toolbar">
         <view class="toolbar-label">风格</view>
@@ -76,7 +76,7 @@
             :key="style.id"
             class="style-option"
             :class="{ active: currentStyleId === style.id }"
-            @click="switchStyle(style.id)"
+            @click.stop="switchStyle(style.id)"
           >
             <text class="style-name">{{ style.name }}</text>
           </view>
@@ -88,10 +88,19 @@
         <view class="progress-info">
           <text class="progress-text">已完成 {{ checkedCount }}/{{ items.length }} 项</text>
         </view>
-        <view class="action-btn" @click="generateImage">
+        <view class="action-btn" @click.stop="generateImage">
           <text class="action-text">生成图片</text>
         </view>
       </view>
+    </view>
+    
+    <!-- 截图提示（首次隐藏时显示） -->
+    <view 
+      v-if="isToolbarHidden && showScreenshotHint" 
+      class="screenshot-hint"
+      @click.stop="showScreenshotHint = false"
+    >
+      <text class="hint-text">💡 双击屏幕可切换工具栏显示</text>
     </view>
 
     <!-- Canvas画布（公共，放在父组件） -->
@@ -172,6 +181,10 @@ const currentTheme = ref(null)
 const items = ref([])
 const currentStyleRef = ref(null) // 当前样式组件的引用
 
+// 工具栏显示/隐藏状态
+const isToolbarHidden = ref(false)
+const showScreenshotHint = ref(false)
+
 onLoad((options) => {
   currentThemeId.value = options.themeId
   currentStyleId.value = options.styleId || 'avatar-warm'
@@ -203,14 +216,152 @@ const checkedCount = computed(() => {
 })
 
 const toggleItem = (index) => {
+  setInteractionFlag()
   items.value[index].checked = !items.value[index].checked
 }
 
 const switchStyle = (newStyleId) => {
+  setInteractionFlag()
   currentStyleId.value = newStyleId
 }
 
+// 切换工具栏显示/隐藏
+const toggleToolbar = () => {
+  // 标记有交互，避免连续触发
+  setInteractionFlag()
+  
+  const wasHidden = isToolbarHidden.value
+  isToolbarHidden.value = !isToolbarHidden.value
+  
+  // 如果是第一次隐藏，显示提示
+  if (!wasHidden && isToolbarHidden.value) {
+    showScreenshotHint.value = true
+    // 3秒后自动隐藏提示
+    setTimeout(() => {
+      showScreenshotHint.value = false
+    }, 3000)
+  }
+  
+  // 调整页面padding，避免内容被遮挡
+  // 这个通过CSS的transition自动处理
+}
+
+// 双击检测变量
+let lastTapTime = 0
+let lastTapTarget = null
+const DOUBLE_TAP_DELAY = 350 // 双击间隔时间（毫秒）
+
+// 标记是否有其他交互发生（用于避免双击误触）
+let hasOtherInteraction = false
+let interactionTimer = null
+
+// 设置交互标记
+const setInteractionFlag = () => {
+  hasOtherInteraction = true
+  if (interactionTimer) {
+    clearTimeout(interactionTimer)
+  }
+  interactionTimer = setTimeout(() => {
+    hasOtherInteraction = false
+  }, DOUBLE_TAP_DELAY + 100)
+}
+
+// 处理屏幕点击，实现双击切换工具栏
+const handleScreenTap = (e) => {
+  // 如果有其他交互发生，不处理双击
+  if (hasOtherInteraction) {
+    return
+  }
+  
+  const target = e.target
+  const currentTarget = e.currentTarget
+  
+  // 如果点击的不是容器本身，检查是否是可交互元素
+  if (target !== currentTarget) {
+    const isInteractive = checkIfInteractiveElement(target)
+    if (isInteractive) {
+      setInteractionFlag()
+      return
+    }
+  }
+  
+  // 延迟处理，给其他事件处理机会
+  setTimeout(() => {
+    // 如果在这期间有其他交互，不处理
+    if (hasOtherInteraction) {
+      return
+    }
+    
+    const currentTime = Date.now()
+    const timeDiff = currentTime - lastTapTime
+    
+    // 双击检测：时间间隔短
+    if (timeDiff < DOUBLE_TAP_DELAY && timeDiff > 0) {
+      // 双击检测成功
+      toggleToolbar()
+      lastTapTime = 0
+      lastTapTarget = null
+    } else {
+      // 记录这次点击
+      lastTapTime = currentTime
+      lastTapTarget = target
+    }
+  }, 50) // 延迟50ms，让其他事件先处理
+}
+
+// 检查元素是否是可交互元素
+const checkIfInteractiveElement = (element) => {
+  if (!element) return false
+  
+  try {
+    // 在小程序中，可能需要通过其他方式获取class
+    // 尝试多种方式获取className
+    let classStr = ''
+    
+    if (element.className) {
+      if (typeof element.className === 'string') {
+        classStr = element.className
+      } else if (typeof element.className === 'object' && element.className.baseVal) {
+        classStr = element.className.baseVal
+      } else if (Array.isArray(element.className)) {
+        classStr = element.className.join(' ')
+      }
+    }
+    
+    // 也可以通过 dataset 或其他属性判断
+    const dataset = element.dataset || {}
+    
+    // 可交互元素的class关键词
+    const interactiveKeywords = [
+      'tag-item',
+      'action-btn',
+      'style-option',
+      'screenshot-hint',
+      'container' // 样式组件的容器，点击它也不应该触发
+    ]
+    
+    // 如果包含可交互关键词，返回true
+    if (interactiveKeywords.some(keyword => classStr.includes(keyword))) {
+      return true
+    }
+    
+    // 检查tagName
+    const tagName = (element.tagName || '').toLowerCase()
+    const interactiveTags = ['button', 'input', 'textarea', 'select']
+    if (interactiveTags.includes(tagName)) {
+      return true
+    }
+  } catch (err) {
+    // 如果获取信息失败，保守处理，不认为是可交互元素
+    console.log('checkIfInteractiveElement error:', err)
+  }
+  
+  return false
+}
+
 const generateImage = async () => {
+  setInteractionFlag()
+  
   if (!currentStyleRef.value) {
     uni.showToast({
       title: '样式组件未加载',
@@ -326,6 +477,13 @@ const generateImage = async () => {
   min-height: 100vh;
   background: linear-gradient(to bottom, #faf8f3 0%, #f5f1e8 100%);
   padding-bottom: 240rpx; /* 为底部操作栏留出空间 */
+  transition: padding-bottom 0.3s ease;
+  position: relative;
+}
+
+/* 工具栏隐藏时，减少底部padding */
+.page-container.toolbar-hidden {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .action-bar {
@@ -338,6 +496,13 @@ const generateImage = async () => {
   box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 100;
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.action-bar.hidden {
+  transform: translateY(100%);
+  box-shadow: none;
 }
 
 /* 风格切换工具栏 */
@@ -347,7 +512,9 @@ const generateImage = async () => {
   gap: 20rpx;
   padding: 20rpx 30rpx;
   border-bottom: 1rpx solid rgba(0, 0, 0, 0.06);
+  position: relative;
 }
+
 
 .toolbar-label {
   font-size: 26rpx;
@@ -441,6 +608,41 @@ const generateImage = async () => {
   font-size: 32rpx;
   color: #fff;
   font-weight: 600;
+}
+
+
+/* 截图提示 */
+.screenshot-hint {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 24rpx 40rpx;
+  border-radius: 16rpx;
+  z-index: 200;
+  animation: hintFadeIn 0.3s ease;
+  max-width: 80%;
+  text-align: center;
+  backdrop-filter: blur(10rpx);
+}
+
+.hint-text {
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #fff;
+}
+
+@keyframes hintFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .canvas {
