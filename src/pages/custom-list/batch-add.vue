@@ -2,7 +2,7 @@
   <view class="container">
     <view class="content-wrapper">
       <view class="form-section">
-        <view class="section-label">标题 *</view>
+        <view class="section-label">标题 <text class="required">*</text></view>
         <input 
           class="title-input"
           v-model="formData.title"
@@ -10,10 +10,20 @@
           maxlength="20"
         />
       </view>
+      
+      <view class="form-section">
+        <view class="section-label">描述 <text class="required">*</text></view>
+        <input 
+          class="title-input"
+          v-model="formData.description"
+          placeholder="一句话描述这个清单"
+          maxlength="30"
+        />
+      </view>
 
       <view class="form-section">
         <view class="section-header">
-          <view class="section-label">批量导入 (每行一项，共{{ itemCount }}项)</view>
+          <view class="section-label">批量导入 <text class="required">*</text> (每行一项，共{{ itemCount }}项)</view>
           <view class="action-btns">
             <view class="action-btn" @click="copyText">
               <text class="action-btn-text">复制</text>
@@ -57,7 +67,8 @@ import {
 } from '../../utils/custom-lists.js'
 
 const formData = ref({
-  title: ''
+  title: '',
+  description: ''
 })
 
 const batchText = ref('')
@@ -71,11 +82,20 @@ const itemCount = computed(() => {
 
 const canSave = computed(() => {
   return formData.value.title.trim().length > 0 && 
+         formData.value.description.trim().length > 0 &&
          batchText.value.trim().length > 0 && 
          !isSaving.value
 })
 
 const saveList = () => {
+  if (!formData.value.title.trim()) {
+    uni.showToast({ title: '请输入标题', icon: 'none' })
+    return
+  }
+  if (!formData.value.description.trim()) {
+    uni.showToast({ title: '请输入描述', icon: 'none' })
+    return
+  }
   if (!canSave.value || isSaving.value) {
     if (!isSaving.value) {
       uni.showToast({ title: '请填写完整信息', icon: 'none' })
@@ -103,7 +123,8 @@ const saveList = () => {
   try {
     const newList = createCustomList(
       formData.value.title.trim(),
-      validItems
+      validItems,
+      formData.value.description.trim()
     )
     
     const success = addCustomList(newList)
@@ -204,6 +225,11 @@ const goBack = () => {
   font-size: 28rpx;
   color: #333;
   font-weight: 600;
+}
+
+.required {
+  color: #ff0000;
+  font-weight: bold;
 }
 
 .action-btns {

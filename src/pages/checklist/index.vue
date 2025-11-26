@@ -252,7 +252,7 @@ onLoad((options) => {
         id: 'custom-' + customListData.id,
         name: customListData.title,
         emoji: '📝',
-        description: '自定义清单',
+        description: '多做计划总没错的',
         defaultStyle: 'simple',
         availableStyles: allStyles.map(s => s.id), // 自定义清单支持所有样式
         items: customListData.items.map(item => item.text)

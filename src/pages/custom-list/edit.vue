@@ -21,6 +21,20 @@
             maxlength="20"
           />
         </view>
+        
+        <!-- 清单描述 -->
+        <view class="form-section">
+          <view class="section-header">
+            <text class="section-title">描述</text>
+            <text class="required">*</text>
+          </view>
+          <input 
+            class="title-input"
+            v-model="formData.description"
+            placeholder="一句话描述这个清单"
+            maxlength="30"
+          />
+        </view>
 
         <!-- 输入模式切换 -->
         <view class="mode-switch">
@@ -136,6 +150,7 @@ const isSaving = ref(false)
 
 const formData = ref({
   title: '',
+  description: '',
   items: [{ text: '' }]
 })
 
@@ -147,10 +162,11 @@ const batchItemCount = computed(() => {
 
 const canSave = computed(() => {
   const hasTitle = formData.value.title.trim().length > 0
+  const hasDescription = formData.value.description.trim().length > 0
   if (inputMode.value === 'batch') {
-    return hasTitle && batchText.value.trim().length > 0 && !isSaving.value
+    return hasTitle && hasDescription && batchText.value.trim().length > 0 && !isSaving.value
   } else {
-    return hasTitle && formData.value.items.some(item => item.text.trim().length > 0) && !isSaving.value
+    return hasTitle && hasDescription && formData.value.items.some(item => item.text.trim().length > 0) && !isSaving.value
   }
 })
 
@@ -167,6 +183,7 @@ const loadEditData = () => {
   if (list) {
     formData.value = {
       title: list.title,
+      description: list.description || '',
       items: list.items.map(item => ({ text: item.text }))
     }
     // 同步到批量输入
@@ -193,6 +210,14 @@ const removeItem = (index) => {
 }
 
 const saveList = () => {
+  if (!formData.value.title.trim()) {
+    uni.showToast({ title: '请输入标题', icon: 'none' })
+    return
+  }
+  if (!formData.value.description.trim()) {
+    uni.showToast({ title: '请输入描述', icon: 'none' })
+    return
+  }
   if (!canSave.value || isSaving.value) {
     if (!isSaving.value) {
       uni.showToast({ title: '请填写完整信息', icon: 'none' })
@@ -226,11 +251,12 @@ const saveList = () => {
       const updatedList = {
         id: editId.value,
         title: formData.value.title.trim(),
+        description: formData.value.description.trim(),
         items: validItems.map(text => ({ text, checked: false }))
       }
       success = updateCustomList(updatedList)
     } else {
-      const newList = createCustomList(formData.value.title.trim(), validItems)
+      const newList = createCustomList(formData.value.title.trim(), validItems, formData.value.description.trim())
       success = addCustomList(newList)
     }
 
@@ -371,7 +397,8 @@ const goBack = () => {
 
 .required {
   font-size: 32rpx;
-  color: #dc2626;
+  color: #ff0000;
+  font-weight: bold;
 }
 
 .item-count {

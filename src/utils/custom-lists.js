@@ -4,10 +4,11 @@ const STORAGE_KEY = 'custom_checklists'
 const MAX_LISTS = 5
 
 // 自定义清单数据结构
-export const createCustomList = (title, items = []) => {
+export const createCustomList = (title, items = [], description = '') => {
   return {
     id: Date.now().toString(),
     title: title.trim(),
+    description: description.trim(),
     items: items.map(item => ({
       text: typeof item === 'string' ? item.trim() : item.text.trim(),
       checked: typeof item === 'string' ? false : (item.checked || false)
