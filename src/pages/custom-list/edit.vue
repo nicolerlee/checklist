@@ -79,14 +79,22 @@
             <text class="section-title">批量编辑</text>
             <text class="required">*</text>
             <text class="tip">每行一项(共{{ batchItemCount }}项)</text>
+            <view class="header-actions">
+              <view class="header-btn" @click="copyBatchText">
+                <text class="header-btn-text">复制</text>
+              </view>
+              <view class="header-btn" @click="clearBatchText">
+                <text class="header-btn-text">清除</text>
+              </view>
+            </view>
           </view>
           <textarea 
             class="batch-textarea"
             v-model="batchText"
             placeholder="请输入清单内容，每行一项"
-            :maxlength="1000"
+            :maxlength="2000"
           />
-          <view class="char-count">{{ batchText.length }}/1000</view>
+          <view class="char-count">{{ batchText.length }}/2000</view>
         </view>
       </view>
     </scroll-view>
@@ -241,6 +249,35 @@ const saveList = () => {
   }
 }
 
+const copyBatchText = () => {
+  if (!batchText.value.trim()) {
+    uni.showToast({ title: '没有内容可复制', icon: 'none' })
+    return
+  }
+  uni.setClipboardData({
+    data: batchText.value,
+    success: () => {
+      uni.showToast({ title: '已复制', icon: 'success' })
+    }
+  })
+}
+
+const clearBatchText = () => {
+  if (!batchText.value.trim()) {
+    return
+  }
+  uni.showModal({
+    title: '确认清除',
+    content: '确定要清除所有内容吗？',
+    success: (res) => {
+      if (res.confirm) {
+        batchText.value = ''
+        uni.showToast({ title: '已清除', icon: 'success' })
+      }
+    }
+  })
+}
+
 const goBack = () => {
   // 检查是否有未保存的更改
   const hasChanges = formData.value.title.trim().length > 0 || 
@@ -302,6 +339,28 @@ const goBack = () => {
   align-items: center;
   margin-bottom: 20rpx;
   gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12rpx;
+  margin-left: auto;
+}
+
+.header-btn {
+  padding: 8rpx 16rpx;
+  background: #f3f4f6;
+  border-radius: 8rpx;
+}
+
+.header-btn:active {
+  opacity: 0.7;
+}
+
+.header-btn-text {
+  font-size: 24rpx;
+  color: #666;
 }
 
 .section-title {

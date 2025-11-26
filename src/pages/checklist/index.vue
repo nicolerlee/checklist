@@ -116,6 +116,15 @@
     >
       <text class="hint-text">💡 双击屏幕可切换工具栏显示</text>
     </view>
+    
+    <!-- 右上角提示 -->
+    <view 
+      v-if="showTopHint" 
+      class="top-hint"
+      @click.stop="showTopHint = false"
+    >
+      <text class="top-hint-text">💡 双击屏幕空白处可切换工具显示/隐藏</text>
+    </view>
 
     <!-- Canvas画布（公共，放在父组件） -->
     <canvas
@@ -204,8 +213,37 @@ const currentStyleRef = ref(null) // 当前样式组件的引用
 // 工具栏显示/隐藏状态
 const isToolbarHidden = ref(false)
 const showScreenshotHint = ref(false)
+const showTopHint = ref(false)
+
+// 检查是否需要显示提示
+const checkAndShowHint = () => {
+  try {
+    const today = new Date().toDateString()
+    const hintData = uni.getStorageSync('toolbarHintData')
+    
+    if (!hintData || hintData.date !== today) {
+      // 新的一天，重置计数
+      uni.setStorageSync('toolbarHintData', { date: today, count: 1 })
+      showTopHint.value = true
+      setTimeout(() => {
+        showTopHint.value = false
+      }, 3000)
+    } else if (hintData.count < 2) {
+      // 当天还没达到2次
+      uni.setStorageSync('toolbarHintData', { date: today, count: hintData.count + 1 })
+      showTopHint.value = true
+      setTimeout(() => {
+        showTopHint.value = false
+      }, 3000)
+    }
+  } catch (e) {
+    console.error('检查提示失败:', e)
+  }
+}
 
 onLoad((options) => {
+  // 检查并显示提示
+  checkAndShowHint()
   // 检查是否是自定义清单
   if (options.customList) {
     try {
@@ -694,6 +732,28 @@ const generateImage = async () => {
   color: #fff;
 }
 
+/* 右上角提示 */
+.top-hint {
+  position: fixed;
+  top: 20rpx;
+  right: 20rpx;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 20rpx 32rpx;
+  border-radius: 12rpx;
+  z-index: 200;
+  animation: topHintSlideIn 0.3s ease;
+  max-width: 500rpx;
+  backdrop-filter: blur(10rpx);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
+}
+
+.top-hint-text {
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: #fff;
+}
+
 @keyframes hintFadeIn {
   from {
     opacity: 0;
@@ -702,6 +762,17 @@ const generateImage = async () => {
   to {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes topHintSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

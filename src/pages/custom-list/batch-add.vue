@@ -12,14 +12,24 @@
       </view>
 
       <view class="form-section">
-        <view class="section-label">批量导入 (每行一项，共{{ itemCount }}项)</view>
+        <view class="section-header">
+          <view class="section-label">批量导入 (每行一项，共{{ itemCount }}项)</view>
+          <view class="action-btns">
+            <view class="action-btn" @click="copyText">
+              <text class="action-btn-text">复制</text>
+            </view>
+            <view class="action-btn" @click="clearText">
+              <text class="action-btn-text">清除</text>
+            </view>
+          </view>
+        </view>
         <textarea 
           class="batch-textarea"
           v-model="batchText"
           placeholder="请输入清单内容，每行一项"
-          :maxlength="1000"
+          :maxlength="2000"
         />
-        <view class="char-count">{{ batchText.length }}/1000</view>
+        <view class="char-count">{{ batchText.length }}/2000</view>
       </view>
     </view>
 
@@ -115,6 +125,35 @@ const saveList = () => {
   }
 }
 
+const copyText = () => {
+  if (!batchText.value.trim()) {
+    uni.showToast({ title: '没有内容可复制', icon: 'none' })
+    return
+  }
+  uni.setClipboardData({
+    data: batchText.value,
+    success: () => {
+      uni.showToast({ title: '已复制', icon: 'success' })
+    }
+  })
+}
+
+const clearText = () => {
+  if (!batchText.value.trim()) {
+    return
+  }
+  uni.showModal({
+    title: '确认清除',
+    content: '确定要清除所有内容吗？',
+    success: (res) => {
+      if (res.confirm) {
+        batchText.value = ''
+        uni.showToast({ title: '已清除', icon: 'success' })
+      }
+    }
+  })
+}
+
 const goBack = () => {
   const hasChanges = formData.value.title.trim().length > 0 || batchText.value.trim().length > 0
   
@@ -154,11 +193,37 @@ const goBack = () => {
   margin-bottom: 24rpx;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
 .section-label {
   font-size: 28rpx;
   color: #333;
   font-weight: 600;
-  margin-bottom: 20rpx;
+}
+
+.action-btns {
+  display: flex;
+  gap: 12rpx;
+}
+
+.action-btn {
+  padding: 8rpx 16rpx;
+  background: #f0f0f0;
+  border-radius: 8rpx;
+}
+
+.action-btn:active {
+  opacity: 0.7;
+}
+
+.action-btn-text {
+  font-size: 24rpx;
+  color: #666;
 }
 
 .title-input {
