@@ -30,12 +30,6 @@
       }
     },
     {
-      "path": "pages/canvas-test/index",
-      "style": {
-        "navigationBarTitleText": "Canvas测试"
-      }
-    },
-    {
       "path": "pages/custom-list/index",
       "style": {
         "navigationBarTitleText": "我的清单",

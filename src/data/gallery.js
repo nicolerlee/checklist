@@ -3,12 +3,22 @@
 
 const galleryItems = [
   {
+    id: 'gallery-007',
+    title: '我的100个愿望',
+    description: '记录属于我的美好时光',
+    themeId: 'life-100',
+    styleId: 'tags',
+    previewImage: '/static/gallery/my-100.jpg',
+    emoji: '✨',
+    featured: true
+  },
+  {
     id: 'gallery-001',
     title: '人生中的100个愿望',
     description: '记录生活中的美好瞬间',
     themeId: 'life-100',
     styleId: 'tags',
-    previewImage: '/static/styles/life-100.jpg',
+    previewImage: '/static/gallery/life-100.jpg',
     emoji: '🌟',
     featured: true
   },
@@ -18,7 +28,7 @@ const galleryItems = [
     description: '那些让你怀疑自己智商的时刻',
     themeId: 'life-chaos',
     styleId: 'crazy-bright',
-    previewImage: '/static/styles/life-chaos2.jpg',
+    previewImage: '/static/gallery/life-chaos2.jpg',
     emoji: '🤯',
     featured: true
   }
