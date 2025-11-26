@@ -6,7 +6,7 @@ export default {
   emoji: '😊',
   description: '小事也能让人幸福',
   defaultStyle: 'crazy-bright',
-  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns2', 'three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "睡到自然醒",
     "清晨的鸟鸣",

@@ -78,6 +78,13 @@
       :theme="currentTheme"
       @toggle="toggleItem"
     />
+    <three-columns2-style 
+      v-else-if="currentStyleId === 'three-columns2'"
+      ref="currentStyleRef"
+      :items="items"
+      :theme="currentTheme"
+      @toggle="toggleItem"
+    />
 
     <!-- 底部操作栏（公共） -->
     <view class="action-bar" :class="{ hidden: isToolbarHidden }">
@@ -131,7 +138,7 @@
       type="2d"
       id="checklist-canvas"
       class="canvas"
-      :style="{ width: '750px', height: currentStyleId === 'three-columns' ? '1300px' : (currentStyleId === 'two-columns' ? '1800px' : '1200px') }"
+:style="{ width: '750px', height: currentStyleId === 'three-columns2' ? '1000px' : (currentStyleId === 'three-columns' ? '1300px' : (currentStyleId === 'two-columns' ? '1800px' : '1200px')) }"
     ></canvas>
   </view>
 </template>
@@ -159,6 +166,7 @@ import NormalStyle from '../../styles/normal-style.vue'
 import CrazyStyle from '../../styles/crazy-style.vue'
 import CrazyBrightStyle from '../../styles/crazy-bright-style.vue'
 import ThreeColumnsStyle from '../../styles/three-columns.vue'
+import ThreeColumns2Style from '../../styles/three-columns2.vue'
 import TwoColumnsStyle from '../../styles/two-columns.vue'
 
 // themes 对象已通过 require.context 自动加载（见上方）
@@ -174,11 +182,13 @@ const styleComponents = {
   'crazy': CrazyStyle,
   'crazy-bright': CrazyBrightStyle,
   'three-columns': ThreeColumnsStyle,
+  'three-columns2': ThreeColumns2Style,
   'two-columns': TwoColumnsStyle
 }
 
 // 所有可用的样式定义
 const allStyles = [
+  { id: 'three-columns2', name: '三列布局2', bgColor: '#ffd4d4' },
   { id: 'two-columns', name: '两列布局', bgColor: '#f5f0e8' },
   { id: 'three-columns', name: '三列布局', bgColor: '#ffffff' },
   { id: 'tags', name: '标签云', bgColor: '#e6f7ff' },
@@ -501,6 +511,7 @@ const generateImage = async () => {
         // 调用当前样式组件的绘制方法
         let canvasHeight = 1200
         if (currentStyleId.value === 'three-columns') canvasHeight = 1300
+        if (currentStyleId.value === 'three-columns2') canvasHeight = 1000
         if (currentStyleId.value === 'two-columns') canvasHeight = 1800
         if (currentStyleRef.value && typeof currentStyleRef.value.drawCanvas === 'function') {
           await currentStyleRef.value.drawCanvas(ctx, canvas, { width: 750, height: canvasHeight })

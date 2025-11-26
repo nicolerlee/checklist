@@ -6,7 +6,7 @@ export default {
   emoji: '🌟',
   description: '人生那么长，你完成了多少？',
   defaultStyle: 'three-columns',
-  availableStyles: ['three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns2', 'three-columns', 'two-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     "送礼物",
     "被送礼物",

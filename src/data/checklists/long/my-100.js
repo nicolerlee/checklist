@@ -6,7 +6,7 @@ export default {
   emoji: '💯',
   description: '我想做到的100件事',
   defaultStyle: 'tags2',
-  availableStyles: ['simple', 'avatar-warm', 'normal', 'vintage', 'formal', 'tags', 'tags2', 'three-columns', 'two-columns'],
+  availableStyles: ['three-columns2', 'simple', 'avatar-warm', 'normal', 'vintage', 'formal', 'tags', 'tags2', 'three-columns', 'two-columns'],
   items: [
     "去徒步",
     "在公园晒太阳",

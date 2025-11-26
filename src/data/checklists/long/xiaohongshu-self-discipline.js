@@ -6,7 +6,7 @@ export default {
   emoji: '💪',
   description: '成为更好的自己，勇敢做自己',
   defaultStyle: 'three-columns',
-  availableStyles: ["three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
+  availableStyles: ['three-columns2', "three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "早起不赖床",
     "每天喝8杯水",

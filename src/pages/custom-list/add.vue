@@ -43,7 +43,7 @@
           <input 
             class="content-input"
             v-model="currentInput"
-            placeholder="输入后按空格键继续添加"
+            placeholder="输入后按空格键,继续添加"
             @input="handleInput"
             @confirm="addTag"
             :focus="true"

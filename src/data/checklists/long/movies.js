@@ -5,7 +5,7 @@ export default {
   emoji: '📽️',
   description: '经典电影观影清单',
   defaultStyle: 'tags',  // 推荐：标签云风格
-  availableStyles: ["three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
+  availableStyles: ['three-columns2', "three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     '肖申克的救赎', '霸王别姬', '阿甘正传', '这个杀手不太冷', '美丽人生',
     '泰坦尼克号', '千与千寻', '辛德勒的名单', '盗梦空间', '机器人总动员',

@@ -6,7 +6,7 @@ export default {
   emoji: '🌟',
   description: '记录生活中的美好瞬间',
   defaultStyle: 'three-columns',
-  availableStyles: ["three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
+  availableStyles: ['three-columns2', "three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "看一次日出",
     "看一次日落",

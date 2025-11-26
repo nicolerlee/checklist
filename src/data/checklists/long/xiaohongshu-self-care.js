@@ -6,7 +6,7 @@ export default {
   emoji: '🌸',
   description: '学会爱自己，你值得拥有一切美好',
   defaultStyle: 'three-columns',
-  availableStyles: ["three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
+  availableStyles: ['three-columns2', "three-columns", "two-columns", "tags", "tags2", "crazy", "crazy-bright"],
   items: [
     "给自己买一束花",
     "给自己做一顿美食",

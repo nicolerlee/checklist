@@ -22,6 +22,7 @@ import life100 from './long/life-100.js'
 import lifeChaos from './long/life-chaos.js'
 import girl100 from './long/girl-100.js'
 import my100 from './long/my-100.js'
+import afterwork100 from './long/afterwork-100.js'
 
 // 从 short 文件夹导入
 import artLife from './short/art-life.js'
@@ -49,6 +50,7 @@ import self108 from './short/self-108.js'
 
 // 所有清单主题列表
 const allThemes = [
+  afterwork100,
   life100,
   my101Flaws,
   alone100,

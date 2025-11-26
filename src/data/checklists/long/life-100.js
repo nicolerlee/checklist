@@ -6,7 +6,7 @@ export default {
   description: '记录生活中的美好瞬间',
   defaultStyle: 'two-columns',  // 推荐：两列布局
   // 可用的样式列表（可选，如果不定义则使用所有样式）
-  availableStyles: ['two-columns', 'three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
+  availableStyles: ['three-columns2', 'two-columns', 'three-columns', 'tags', 'tags2', 'crazy', 'crazy-bright'],
   items: [
     '跑马拉松',
     '跳伞',
