@@ -60,9 +60,9 @@
       }
     },
     {
-      "path": "pages/custom-list/batch-import",
+      "path": "pages/custom-list/add",
       "style": {
-        "navigationBarTitleText": "批量导入",
+        "navigationBarTitleText": "添加清单",
         "navigationBarTextStyle": "black",
         "navigationBarBackgroundColor": "#ffffff"
       }
@@ -82,15 +82,21 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "static/images/home.png",
+        "selectedIconPath": "static/images/home-active.png"
       },
       {
         "pagePath": "pages/gallery/index",
-        "text": "推荐"
+        "text": "推荐",
+        "iconPath": "static/images/gallery.png",
+        "selectedIconPath": "static/images/gallery-active.png"
       },
       {
         "pagePath": "pages/my/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "static/images/my.png",
+        "selectedIconPath": "static/images/my-active.png"
       }
     ]
   }

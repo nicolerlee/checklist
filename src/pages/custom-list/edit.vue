@@ -29,14 +29,14 @@
             :class="{ active: inputMode === 'single' }"
             @click="inputMode = 'single'"
           >
-            <text class="mode-text">逐项输入</text>
+            <text class="mode-text">逐项编辑</text>
           </view>
           <view 
             class="mode-btn" 
             :class="{ active: inputMode === 'batch' }"
             @click="inputMode = 'batch'"
           >
-            <text class="mode-text">批量输入</text>
+            <text class="mode-text">批量编辑</text>
           </view>
         </view>
 
@@ -45,7 +45,7 @@
           <view class="section-header">
             <text class="section-title">清单条目</text>
             <text class="required">*</text>
-            <text class="item-count">{{ formData.items.length }} 项</text>
+            <text class="tip">共{{ formData.items.length }}项</text>
           </view>
           
           <view class="items-list">
@@ -76,9 +76,9 @@
         <!-- 批量输入模式 -->
         <view v-else class="form-section">
           <view class="section-header">
-            <text class="section-title">批量输入</text>
+            <text class="section-title">批量编辑</text>
             <text class="required">*</text>
-            <text class="tip">每行一项</text>
+            <text class="tip">每行一项(共{{ batchItemCount }}项)</text>
           </view>
           <textarea 
             class="batch-textarea"
@@ -129,6 +129,12 @@ const isSaving = ref(false)
 const formData = ref({
   title: '',
   items: [{ text: '' }]
+})
+
+const batchItemCount = computed(() => {
+  return batchText.value.split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0).length
 })
 
 const canSave = computed(() => {
@@ -327,6 +333,7 @@ const goBack = () => {
   padding: 0 20rpx;
   font-size: 28rpx;
   color: #374151;
+  box-sizing: border-box;
 }
 
 .title-input:focus {
