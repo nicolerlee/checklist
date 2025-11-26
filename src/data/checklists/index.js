@@ -23,6 +23,17 @@ import lifeChaos from './long/life-chaos.js'
 import girl100 from './long/girl-100.js'
 import my100 from './long/my-100.js'
 import afterwork100 from './long/afterwork-100.js'
+import meaningful100_1 from './long/meaningful-100-1.js'
+import meaningful100_3 from './long/meaningful-100-3.js'
+import meaningful100_4 from './long/meaningful-100-4.js'
+import meaningful100_7 from './long/meaningful-100-7.js'
+import betterLife3 from './long/better-life-3.js'
+import betterLife7 from './long/better-life-7.js'
+import betterLife9 from './long/better-life-9.js'
+import betterLife10 from './long/better-life-10.js'
+import girlNormal2 from './long/girl-normal-2.js'
+import girlNormal3 from './long/girl-normal-3.js'
+import girlNormal7 from './long/girl-normal-7.js'
 
 // 从 short 文件夹导入
 import artLife from './short/art-life.js'
@@ -70,10 +81,21 @@ const allThemes = [
   xiaohongshuLife100,
   lifeChaos,
   xiaohongshuSelfDiscipline,
+  meaningful100_1,
+  meaningful100_3,
+  meaningful100_4,
+  meaningful100_7,
+  betterLife3,
+  betterLife7,
+  betterLife9,
+  betterLife10,
   xiaohongshuTravel,
   xiaohongshuStudy,
   xiaohongshuLove,
   xiaohongshuSelfCare,
+  girlNormal2,
+  girlNormal3,
+  girlNormal7,
   smallHappiness,
   smallThing,
   artLife,
