@@ -170,17 +170,17 @@ const styleComponents = {
 
 // 所有可用的样式定义
 const allStyles = [
+  { id: 'two-columns', name: '两列布局', bgColor: '#f5f0e8' },
+  { id: 'three-columns', name: '三列布局', bgColor: '#ffffff' },
+  { id: 'tags', name: '标签云', bgColor: '#e6f7ff' },
+  { id: 'tags2', name: '标签云2', bgColor: '#ffffff' },
+  { id: 'crazy-bright', name: '不规则-亮色', bgColor: '#ffeef8' },
+  { id: 'crazy', name: '不规则', bgColor: '#ffeef8' },
   { id: 'avatar-warm', name: '头像温暖', bgColor: '#f5f1e8' },
   { id: 'simple', name: '简约清新', bgColor: '#f8f9fa' },
   { id: 'normal', name: '标准样式', bgColor: '#f8f9fa' },
   { id: 'formal', name: '正式简洁', bgColor: '#f5f1e8' },
-  { id: 'vintage', name: '复古温馨', bgColor: '#f9f3e8' },
-  { id: 'tags', name: '标签云', bgColor: '#e6f7ff' },
-  { id: 'tags2', name: '标签云2', bgColor: '#ffffff' },
-  { id: 'crazy', name: '不规则', bgColor: '#ffeef8' },
-  { id: 'crazy-bright', name: '不规则-亮色', bgColor: '#ffeef8' },
-  { id: 'three-columns', name: '三列布局', bgColor: '#ffffff' },
-  { id: 'two-columns', name: '两列布局', bgColor: '#f5f0e8' }
+  { id: 'vintage', name: '复古温馨', bgColor: '#f9f3e8' }
 ]
 
 // 当前主题可用的样式（根据主题配置动态计算）
@@ -225,7 +225,10 @@ onLoad((options) => {
         checked: item.checked || false
       }))
       
-      currentStyleId.value = options.styleId || 'simple'
+      // 从指定的样式中随机选择一个
+      const preferredStyles = ['two-columns', 'three-columns', 'tags', 'tags2', 'crazy-bright', 'crazy']
+      const randomStyle = preferredStyles[Math.floor(Math.random() * preferredStyles.length)]
+      currentStyleId.value = options.styleId || randomStyle
     } catch (error) {
       console.error('解析自定义清单数据失败:', error)
       uni.showToast({
