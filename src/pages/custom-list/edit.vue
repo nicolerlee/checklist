@@ -11,7 +11,7 @@
         <!-- 清单标题 -->
         <view class="form-section">
           <view class="section-header">
-            <text class="section-title">清单标题</text>
+            <text class="section-title">标题</text>
             <text class="required">*</text>
           </view>
           <input 
@@ -467,7 +467,7 @@ const goBack = () => {
 /* 批量输入 */
 .batch-textarea {
   width: 100%;
-  min-height: 300rpx;
+  min-height: 700rpx;
   background: #f9fafb;
   border: 2rpx solid #e5e7eb;
   border-radius: 12rpx;
@@ -475,6 +475,7 @@ const goBack = () => {
   font-size: 26rpx;
   color: #374151;
   line-height: 1.6;
+  box-sizing: border-box;
 }
 
 .char-count {

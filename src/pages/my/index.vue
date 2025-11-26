@@ -5,7 +5,10 @@
       <text class="title">我的清单</text>
       <view class="header-actions">
         <view class="action-btn primary" @click="batchImport">
-          <text class="action-text">新建</text>
+          <text class="action-text">添加</text>
+        </view>
+        <view class="action-btn primary" @click="batchAdd">
+          <text class="action-text">批量添加</text>
         </view>
       </view>
     </view>
@@ -69,6 +72,14 @@ const batchImport = () => {
     return
   }
   uni.navigateTo({ url: '/pages/custom-list/add' })
+}
+
+const batchAdd = () => {
+  if (!canAddNewList()) {
+    uni.showToast({ title: '最多只能创建5份清单', icon: 'none' })
+    return
+  }
+  uni.navigateTo({ url: '/pages/custom-list/batch-add' })
 }
 
 const editList = (list) => {

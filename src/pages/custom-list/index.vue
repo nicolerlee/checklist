@@ -56,6 +56,13 @@
           {{ canAddNew ? '新建清单' : `最多${maxLists}份清单` }}
         </text>
       </view>
+      <view 
+        class="import-btn" 
+        :class="{ disabled: !canAddNew }"
+        @click="batchImport"
+      >
+        <text class="import-btn-text">批量导入</text>
+      </view>
     </view>
   </view>
 </template>
@@ -93,6 +100,20 @@ const createNewList = () => {
   
   uni.navigateTo({
     url: '/pages/custom-list/edit'
+  })
+}
+
+const batchImport = () => {
+  if (!canAddNew.value) {
+    uni.showToast({
+      title: `最多只能创建${maxLists.value}份清单`,
+      icon: 'none'
+    })
+    return
+  }
+  
+  uni.navigateTo({
+    url: '/pages/custom-list/batch-add'
   })
 }
 
@@ -336,10 +357,12 @@ const formatTime = (timeStr) => {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10rpx);
   border-top: 1rpx solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: 20rpx;
 }
 
-.new-btn {
-  width: 100%;
+.new-btn, .import-btn {
+  flex: 1;
   height: 80rpx;
   background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
   border-radius: 40rpx;
@@ -350,22 +373,22 @@ const formatTime = (timeStr) => {
   transition: all 0.3s ease;
 }
 
-.new-btn:active {
+.new-btn:active, .import-btn:active {
   transform: scale(0.98);
 }
 
-.new-btn.disabled {
+.new-btn.disabled, .import-btn.disabled {
   background: #d1d5db;
   box-shadow: none;
 }
 
-.new-btn-text {
+.new-btn-text, .import-btn-text {
   font-size: 32rpx;
   color: #fff;
   font-weight: 600;
 }
 
-.new-btn.disabled .new-btn-text {
+.new-btn.disabled .new-btn-text, .import-btn.disabled .import-btn-text {
   color: #9ca3af;
 }
 </style>

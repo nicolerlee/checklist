@@ -1,7 +1,6 @@
 <template>
   <view class="container">
     <view class="content-wrapper">
-      <!-- 清单标题 -->
       <view class="form-section">
         <view class="section-label">标题 *</view>
         <input 
@@ -12,39 +11,18 @@
         />
       </view>
 
-      <!-- 清单内容 -->
       <view class="form-section">
-        <view class="section-label">清单内容 ({{ tagItems.length }})</view>
-        <view class="content-area">
-          <view 
-            v-for="(item, index) in tagItems" 
-            :key="index"
-            class="tag-item"
-          >
-            <text class="tag-text">{{ item }}</text>
-            <view class="tag-delete" @click="removeTag(index)">
-              <text class="delete-icon">×</text>
-            </view>
-          </view>
-        </view>
-        
-        <view class="input-row">
-          <input 
-            class="content-input"
-            v-model="currentInput"
-            placeholder="输入后按空格键继续添加"
-            @input="handleInput"
-            @confirm="addTag"
-            :focus="true"
-          />
-          <view class="add-btn" @click="addTag">
-            <text class="add-icon">✓</text>
-          </view>
-        </view>
+        <view class="section-label">批量导入 (每行一项，共{{ itemCount }}项)</view>
+        <textarea 
+          class="batch-textarea"
+          v-model="batchText"
+          placeholder="请输入清单内容，每行一项"
+          :maxlength="1000"
+        />
+        <view class="char-count">{{ batchText.length }}/1000</view>
       </view>
     </view>
 
-    <!-- 底部操作栏 -->
     <view class="bottom-bar">
       <view class="cancel-btn" @click="goBack">
         <text class="btn-text">取消</text>
@@ -61,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { 
   createCustomList, 
   addCustomList, 
@@ -72,55 +50,20 @@ const formData = ref({
   title: ''
 })
 
-const tagItems = ref([])
-const currentInput = ref('')
+const batchText = ref('')
 const isSaving = ref(false)
-const scrollIntoView = ref('')
-const inputFocus = ref(true)
 
-const canSave = computed(() => {
-  return formData.value.title.trim().length > 0 && tagItems.value.length > 0 && !isSaving.value
+const itemCount = computed(() => {
+  return batchText.value.split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0).length
 })
 
-const handleInput = (e) => {
-  const value = e.detail.value
-  // 检测是否以空格结尾
-  if (value.endsWith(' ')) {
-    const text = value.trim()
-    if (text) {
-      if (tagItems.value.includes(text)) {
-        uni.showToast({ title: '已存在同名清单条目', icon: 'none' })
-      } else {
-        tagItems.value.push(text)
-      }
-      currentInput.value = ''
-      setTimeout(() => {
-        scrollIntoView.value = 'input-area'
-      }, 100)
-    } else {
-      currentInput.value = ''
-    }
-  }
-}
-
-const addTag = () => {
-  const text = currentInput.value.trim()
-  if (text) {
-    if (tagItems.value.includes(text)) {
-      uni.showToast({ title: '已存在同名清单条目', icon: 'none' })
-    } else {
-      tagItems.value.push(text)
-    }
-    currentInput.value = ''
-    setTimeout(() => {
-      scrollIntoView.value = 'input-area'
-    }, 100)
-  }
-}
-
-const removeTag = (index) => {
-  tagItems.value.splice(index, 1)
-}
+const canSave = computed(() => {
+  return formData.value.title.trim().length > 0 && 
+         batchText.value.trim().length > 0 && 
+         !isSaving.value
+})
 
 const saveList = () => {
   if (!canSave.value || isSaving.value) {
@@ -135,13 +78,22 @@ const saveList = () => {
     return
   }
 
+  const validItems = batchText.value.split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+  
+  if (validItems.length === 0) {
+    uni.showToast({ title: '请至少添加一个条目', icon: 'none' })
+    return
+  }
+
   isSaving.value = true
   uni.showLoading({ title: '保存中...' })
 
   try {
     const newList = createCustomList(
       formData.value.title.trim(),
-      tagItems.value
+      validItems
     )
     
     const success = addCustomList(newList)
@@ -164,7 +116,7 @@ const saveList = () => {
 }
 
 const goBack = () => {
-  const hasChanges = formData.value.title.trim().length > 0 || tagItems.value.length > 0
+  const hasChanges = formData.value.title.trim().length > 0 || batchText.value.trim().length > 0
   
   if (hasChanges) {
     uni.showModal({
@@ -220,79 +172,23 @@ const goBack = () => {
   box-sizing: border-box;
 }
 
-.content-area {
-  min-height: 100rpx;
-  margin-bottom: 16rpx;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-  row-gap: 5rpx;
-}
-
-.tag-item {
-  display: inline-flex;
-  align-items: center;
-  background: #f0f0f0;
-  border-radius: 6rpx;
-  padding: 8rpx 16rpx;
-  gap: 8rpx;
-  height: 56rpx;
+.batch-textarea {
+  width: 100%;
+  min-height: 700rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.6;
   box-sizing: border-box;
 }
 
-.tag-text {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 1;
-}
-
-.tag-delete {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4rpx;
-}
-
-.delete-icon {
+.char-count {
+  text-align: right;
   font-size: 24rpx;
   color: #999;
-  line-height: 1;
-}
-
-.input-row {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.content-input {
-  flex: 1;
-  height: 72rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  padding: 0 20rpx;
-  font-size: 26rpx;
-  color: #333;
-}
-
-.add-btn {
-  width: 72rpx;
-  height: 72rpx;
-  background: #333;
-  border-radius: 8rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.add-btn:active {
-  opacity: 0.8;
-}
-
-.add-icon {
-  font-size: 32rpx;
-  color: #fff;
-  font-weight: bold;
+  margin-top: 8rpx;
 }
 
 .bottom-bar {

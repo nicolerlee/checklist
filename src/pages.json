@@ -66,6 +66,14 @@
         "navigationBarTextStyle": "black",
         "navigationBarBackgroundColor": "#ffffff"
       }
+    },
+    {
+      "path": "pages/custom-list/batch-add",
+      "style": {
+        "navigationBarTitleText": "批量添加",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
     }
   ],
   "globalStyle": {
