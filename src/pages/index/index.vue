@@ -49,6 +49,8 @@ const selectTheme = (theme) => {
     url: `/pages/checklist/index?themeId=${theme.id}&styleId=${theme.defaultStyle}`
   })
 }
+
+
 </script>
 
 <style scoped>

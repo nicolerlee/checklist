@@ -1,13 +1,6 @@
 <template>
   <view class="container">
-    <!-- 头部区域 -->
-    <view class="header">
-      <view class="header-content">
-        <view class="title-row">
-          <text class="title">推荐</text>
-        </view>
-      </view>
-    </view>
+
 
     <!-- 作品列表 - 瀑布流布局 -->
     <scroll-view class="gallery-list" scroll-y>
@@ -174,7 +167,7 @@ const handleImageError = (e, item) => {
 /* 作品列表 - 瀑布流布局 */
 .gallery-list {
   flex: 1;
-  height: calc(100vh - 180rpx);
+  height: 100vh;
   position: relative;
   background: transparent;
   padding-bottom: env(safe-area-inset-bottom);

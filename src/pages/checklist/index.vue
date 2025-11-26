@@ -206,25 +206,59 @@ const isToolbarHidden = ref(false)
 const showScreenshotHint = ref(false)
 
 onLoad((options) => {
-  currentThemeId.value = options.themeId
-  currentStyleId.value = options.styleId || 'avatar-warm'
-  
-  currentTheme.value = themes[currentThemeId.value]
-  
-  if (currentTheme.value) {
-    items.value = currentTheme.value.items.map(text => ({
-      text,
-      checked: false
-    }))
+  // 检查是否是自定义清单
+  if (options.customList) {
+    try {
+      const customListData = JSON.parse(decodeURIComponent(options.customList))
+      currentTheme.value = {
+        id: 'custom-' + customListData.id,
+        name: customListData.title,
+        emoji: '📝',
+        description: '自定义清单',
+        defaultStyle: 'simple',
+        availableStyles: allStyles.map(s => s.id), // 自定义清单支持所有样式
+        items: customListData.items.map(item => item.text)
+      }
+      
+      items.value = customListData.items.map(item => ({
+        text: item.text,
+        checked: item.checked || false
+      }))
+      
+      currentStyleId.value = options.styleId || 'simple'
+    } catch (error) {
+      console.error('解析自定义清单数据失败:', error)
+      uni.showToast({
+        title: '清单数据错误',
+        icon: 'error'
+      })
+      setTimeout(() => {
+        uni.navigateBack()
+      }, 1500)
+      return
+    }
+  } else {
+    // 原有的系统预置清单逻辑
+    currentThemeId.value = options.themeId
+    currentStyleId.value = options.styleId || 'avatar-warm'
     
-    // 获取当前主题可用的样式 ID 列表
-    const themeAvailableStyleIds = currentTheme.value.availableStyles 
-      ? currentTheme.value.availableStyles 
-      : allStyles.map(s => s.id)
+    currentTheme.value = themes[currentThemeId.value]
     
-    // 如果传入的 styleId 不在可用样式中，使用 defaultStyle 或第一个可用样式
-    if (!themeAvailableStyleIds.includes(currentStyleId.value)) {
-      currentStyleId.value = currentTheme.value.defaultStyle || themeAvailableStyleIds[0] || 'simple'
+    if (currentTheme.value) {
+      items.value = currentTheme.value.items.map(text => ({
+        text,
+        checked: false
+      }))
+      
+      // 获取当前主题可用的样式 ID 列表
+      const themeAvailableStyleIds = currentTheme.value.availableStyles 
+        ? currentTheme.value.availableStyles 
+        : allStyles.map(s => s.id)
+      
+      // 如果传入的 styleId 不在可用样式中，使用 defaultStyle 或第一个可用样式
+      if (!themeAvailableStyleIds.includes(currentStyleId.value)) {
+        currentStyleId.value = currentTheme.value.defaultStyle || themeAvailableStyleIds[0] || 'simple'
+      }
     }
   }
 })

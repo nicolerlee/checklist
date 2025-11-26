@@ -34,6 +34,38 @@
       "style": {
         "navigationBarTitleText": "Canvas测试"
       }
+    },
+    {
+      "path": "pages/custom-list/index",
+      "style": {
+        "navigationBarTitleText": "我的清单",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/custom-list/edit",
+      "style": {
+        "navigationBarTitleText": "编辑清单",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/my/index",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/custom-list/batch-import",
+      "style": {
+        "navigationBarTitleText": "批量导入",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
     }
   ],
   "globalStyle": {
@@ -49,12 +81,16 @@
     "backgroundColor": "#f5f1e8",
     "list": [
       {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
         "pagePath": "pages/gallery/index",
         "text": "推荐"
       },
       {
-        "pagePath": "pages/index/index",
-        "text": "首页"
+        "pagePath": "pages/my/index",
+        "text": "我的"
       }
     ]
   }
